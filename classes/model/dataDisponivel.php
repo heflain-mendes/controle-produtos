@@ -5,7 +5,7 @@ final class DataDisponivel {
     private int $idDisponibilidade;
     private int $idServico;
     private int $data;
-    private int $disponivel;
+    private bool $disponivel;
 
     public function __set($name, $value) : self
     {

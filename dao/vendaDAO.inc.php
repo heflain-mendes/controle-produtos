@@ -15,6 +15,15 @@ final class TipoDAO
         $this->decorator = new GenericDAO($this->conn, "vendas");
     }
 
+    public function insert(int $codCliente, int $codProduto, float $valorTotal, int $qtdItem) {
+        $this->decorator->insert([
+            "Cod_cliente" => $codCliente,
+            "Cod_produto" => $codProduto,
+            "Valor_total" => $valorTotal,
+            "Quantidade_itens" => $qtdItem
+        ]);
+    }
+
     private static function assocToVenda($data) : Venda | null{
         if(!isset($data)) return null;
 

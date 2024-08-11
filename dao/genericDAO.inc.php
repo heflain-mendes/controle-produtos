@@ -7,32 +7,19 @@ final class GenericDAO
         private string $tableName
     ) {} 
 
-    public function findAll() : array {
+    public function find(array $fieldsValues = null) : array | null {
+        $findClause = "";
+
+        if(isset($fieldsValues)){
+            $findClause = " WHERE " . $this->getClause($fieldsValues, " AND ");
+        }
+
         $sql = $this->conn->prepare(
         "
             SELECT * 
             FROM $this->tableName
-        ");
-
-        $sql->execute();
-
-        $result = null;
-
-        if($sql->rowCount() > 0){
-            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
-        }
-
-        return $result;
-    }
-
-    public function find(array $fieldsValues) : array | null {
-        $findClause = $this->getClause($fieldsValues, " AND ");
-
-        $sql = $this->conn->prepare(
-        "
-            SELECT * 
-            FROM $this->tableName 
-            WHERE " . $findClause
+        " 
+            . $findClause
         );
 
         foreach ($fieldsValues as $key => $value) {
@@ -43,7 +30,7 @@ final class GenericDAO
         $result = null;
 
         if($sql->rowCount() > 0){
-            $result = $sql->fetch(PDO::FETCH_ASSOC);
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
         }
         
         return $result;

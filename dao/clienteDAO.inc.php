@@ -21,7 +21,13 @@ class ClienteDAO{
     public function Autenticar($email, $senha) : Cliente | null {
         $cliente = $this->decorator->find(["Email" => $email, "Senha" => $senha]);
 
-        return ClienteDAO::assocToCliente($cliente);
+        $retorno = null;
+
+        if(isset($cliente)){
+            $retorno = ClienteDAO::assocToCliente($cliente[0]);
+        }
+
+        return $retorno;
     }
 
     private static function assocToCliente(array $data) : Cliente | null{
