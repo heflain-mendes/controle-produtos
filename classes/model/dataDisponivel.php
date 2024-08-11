@@ -1,7 +1,7 @@
 <?php
 require_once "../utils/funcoesUteis.php";
 
-final class DatasDisponiveis {
+final class DataDisponivel {
     private int $idDisponibilidade;
     private int $idServico;
     private int $data;

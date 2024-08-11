@@ -4,8 +4,7 @@ final class GenericDAO
 {
     public function __construct(
         private PDO $conn, 
-        private string $tableName, 
-        private $className
+        private string $tableName
     ) {} 
 
     public function findAll() : array {
@@ -20,13 +19,13 @@ final class GenericDAO
         $result = null;
 
         if($sql->rowCount() > 0){
-            $result = $sql->fetchAll(PDO::FETCH_CLASS, $this->className);
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
         }
 
         return $result;
     }
 
-    public function find(array $fieldsValues) {
+    public function find(array $fieldsValues) : array | null {
         $findClause = $this->getClause($fieldsValues, " AND ");
 
         $sql = $this->conn->prepare(
@@ -44,8 +43,7 @@ final class GenericDAO
         $result = null;
 
         if($sql->rowCount() > 0){
-            $sql->setFetchMode(PDO::FETCH_CLASS, $this->className);
-            $result = $sql->fetch(PDO::FETCH_CLASS, $this->className);
+            $result = $sql->fetch(PDO::FETCH_ASSOC);
         }
         
         return $result;
