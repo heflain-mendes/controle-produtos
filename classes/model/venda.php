@@ -1,8 +1,9 @@
 <?php
 final class Venda
 {
-    private int $codVenda;
-    private int $codCliente;
+    private int $id;
+    private int $idCliente;
+    private int $idServico;
     private float $valorTotal;
     private int $qtdItens;
 

@@ -34,8 +34,8 @@ final class DataDisponivelDAO
 
         $d = new DataDisponivel();
 
-        $d->idServico = $data["id_servico"];
-        $d->id_disponibilidade = $data["id_disponibilidade"];
+        $d->id = $data["id"];
+        $d->idDisponibilidade = $data["id_disponibilidade"];
         $d->setData($data["data"]);
         $d->disponivel = $data["diponivel"];
 

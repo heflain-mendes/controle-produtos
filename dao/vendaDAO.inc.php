@@ -17,10 +17,10 @@ final class TipoDAO
 
     public function insert(int $codCliente, int $codProduto, float $valorTotal, int $qtdItem) {
         $this->decorator->insert([
-            "Cod_cliente" => $codCliente,
-            "Cod_produto" => $codProduto,
-            "Valor_total" => $valorTotal,
-            "Quantidade_itens" => $qtdItem
+            "id" => $codCliente,
+            "id_produto" => $codProduto,
+            "valor_total" => $valorTotal,
+            "qtd_itens" => $qtdItem
         ]);
     }
 
@@ -29,11 +29,11 @@ final class TipoDAO
 
         $v = new Venda();
 
-        $v->codVenda = $data["Cod_venda"];
-        $v->codCliente = $data["Cod_cliente"];
-        $v->codProduto = $data["Cod_produto"];
-        $v->valorTotal = $data["Valor_total"];
-        $v->qtdItens = $data["Quantidade_itens"];
+        $v->id = $data["id"];
+        $v->idCliente = $data["id_cliente"];
+        $v->idProduto = $data["id_produto"];
+        $v->valorTotal = $data["valor_total"];
+        $v->qtdItens = $data["qtd_itens"];
 
         return $v;
     }

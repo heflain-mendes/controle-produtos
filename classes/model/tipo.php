@@ -1,7 +1,7 @@
 <?php
 final class Tipo
 {
-    private int $idTipo;
+    private int $id;
     private string $nome;
     private float $valor;
 

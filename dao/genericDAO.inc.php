@@ -4,7 +4,8 @@ final class GenericDAO
 {
     public function __construct(
         private PDO $conn, 
-        private string $tableName
+        private string $tableName,
+        private ?string $className = null,
     ) {} 
 
     public function find(array $fieldsValues = null) : array | null {
@@ -30,7 +31,11 @@ final class GenericDAO
         $result = null;
 
         if($sql->rowCount() > 0){
-            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+            if(isset($this->className)){
+                $result = $sql->fetchAll(PDO::FETCH_CLASS, $this->className);
+            }else{
+                $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+            }
         }
         
         return $result;

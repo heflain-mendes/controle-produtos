@@ -1,13 +1,11 @@
 <?php
-require_once "../utils/funcoesUteis.php";
-
 final class Cliente 
 {
-    private int $codCli;
+    private int $id;
     private string $nome;
     private string $endereco;
     private string $telefone;
-    private string $CPF;
+    private string $cpf;
     private int $dtNascimeto;
     private string $email;
     private string $senha;
@@ -21,11 +19,11 @@ final class Cliente
     }
 
     function getDtNascimento() : string {
-        return parseTimestamp($this->dtNascimeto);
+        return $this->dt_nascimento;
     }
 
     function setDtNascimento(string $value){
-        $this->dtNascimeto = strtotime($value);
+        $this->dt_nascimento = strtotime($value);
     }
 }
 ?>

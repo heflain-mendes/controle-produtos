@@ -1,7 +1,7 @@
 <?php
 final class Servico 
 {
-    private int $idServico;
+    private int $id;
     private string $nome;
     private float $valor;
     private string $descricao;

@@ -19,7 +19,7 @@ class ClienteDAO{
     }
 
     public function Autenticar($email, $senha) : Cliente | null {
-        $cliente = $this->decorator->find(["Email" => $email, "Senha" => $senha]);
+        $cliente = $this->decorator->find(["email" => $email, "senha" => $senha]);
 
         $retorno = null;
 
@@ -35,14 +35,14 @@ class ClienteDAO{
 
         $c = new Cliente();
 
-        $c->codCli = $data["CodCli"];
-        $c->nome = $data["Nome"];
-        $c->endereco = $data["Endereco"];
-        $c->telefone = $data["Telefone"];
-        $c->CPF = $data["CPF"];
-        $c->setDtNascimento($data["DtNascimento"]);
-        $c->email = $data["Email"];
-        $c->senha = $data["Senha"];
+        $c->id = $data["id"];
+        $c->nome = $data["nome"];
+        $c->endereco = $data["endereco"];
+        $c->telefone = $data["telefone"];
+        $c->cpf = $data["CPF"];
+        $c->setDtNascimento($data["dt_nascimento"]);
+        $c->email = $data["email"];
+        $c->senha = $data["senha"];
 
         return $c;
     }

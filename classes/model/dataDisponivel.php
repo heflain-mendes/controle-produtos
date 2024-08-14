@@ -2,7 +2,7 @@
 require_once "../utils/funcoesUteis.php";
 
 final class DataDisponivel {
-    private int $idDisponibilidade;
+    private int $id;
     private int $idServico;
     private int $data;
     private bool $disponivel;

@@ -44,7 +44,7 @@ final class ServicoDAO
 
         $s = new Servico();
 
-        $s->idServico = $data["id_servico"];
+        $s->id = $data["id_servico"];
         $s->nome = $data["nome"];
         $s->valor = $data["valor"];
         $s->descricao = $data["descricao"];
