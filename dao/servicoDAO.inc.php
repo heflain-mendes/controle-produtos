@@ -16,7 +16,7 @@ final class ServicoDAO
     }
 
     public function insert(string $nome, float $valor, string $descricao, int $tipo ) {
-        $this->decorator->insert([
+        return $this->decorator->insert([
             "nome" => $nome,
             "valor" => $valor,
             "descricao" => $descricao,
@@ -25,7 +25,7 @@ final class ServicoDAO
     }
 
     public function deleteById(int $id) {
-        $this->decorator->delete(["id_tipo" => $id]);
+        $this->decorator->delete(["id" => $id]);
     }
 
     public function update(Servico $servico) {
@@ -42,14 +42,9 @@ final class ServicoDAO
     private static function assocToServico($data) : Servico | null {
         if(!isset($data)) return null;
 
-        $s = new Servico();
-
-        $s->id = $data["id_servico"];
-        $s->nome = $data["nome"];
-        $s->valor = $data["valor"];
-        $s->descricao = $data["descricao"];
-        $s->idTipo = $data["id_tipo"];
-
+        $s = new Servico($data["nome"], $data["valor"], $data["descricao"], $data["id_tipo"]);
+        $s->id = $data["id"];
+        
         return $s;
     }
 

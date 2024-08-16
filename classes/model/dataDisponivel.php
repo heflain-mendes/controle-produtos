@@ -1,30 +1,27 @@
 <?php
-require_once "../utils/funcoesUteis.php";
-
 final class DataDisponivel {
     private int $id;
-    private int $idServico;
-    private int $data;
-    private bool $disponivel;
+    
+    public function __construct(
+        private int $idServico,
+        private int $data,
+        private bool $disponivel,
+    ) { }
 
-    public function __set($name, $value) : self
-    {
+    public function __set($name, $value){
         $this->$name = $value;
-        return $this;
     }
     
-    public function __get($name)
-    {
+    public function __get($name){
         return $this->$name;
     }
 
     public function getData() : string {
-        return parseTimestamp($this->data);
+        return $this->data;
     }
 
-    public function setData(string $value) : self {
+    public function setData(string $value) {
         $this->data = strtotime($value);
-        return $this;
     }
 }
 ?>

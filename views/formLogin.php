@@ -11,7 +11,7 @@
             </div>
             <div class="card-body p-4 p-sm-5">
                 <h5 class="card-title text-center mb-5 fw-light fs-5">Entre com suas informações de Login</h5>
-                <form action="../controlers/controlerCliente.php" method="get">
+                <form action="../controllers/controllerUsuario.php" method="get">
 
                     <div class="form-floating mb-3">
                         <input type="email" class="form-control" id="floatingInputEmail" placeholder="nome@exemplo.com" name="pEmail">
@@ -35,7 +35,7 @@
 
                     <a class="d-block text-center mt-2 small" href="formCliente.php">Não possui uma conta? Cadastre-se aqui</a>
 
-                    <input type="hidden" value="1" name="pOpcao">
+                    <input type="hidden" value="1" name="opcao">
                 </form>
             </div>
         </div>

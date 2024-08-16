@@ -9,6 +9,14 @@
   <body>
         <div class="container">
 <?php
-    // tratamento do menu para cada usuário!
-    require_once "menu.inc.php";
+    require_once "../classes/model/usuario.php";
+    
+    session_start();
+    $tipo = "C";
+
+    if(isset($_SESSION["usuario"]) && $_SESSION["usuario"] instanceof Usuario){
+      $tipo = $_SESSION["usuario"]->tipo;
+    }
+
+    require_once "menu$tipo.inc.php";
 ?>          

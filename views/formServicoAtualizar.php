@@ -1,18 +1,17 @@
-
 <?php
-    require_once 'includes/cabecalho.inc.php';
+require_once 'includes/cabecalho.inc.php';
 ?>
 <p>
 <h1 class="text-center">Alteração de produto</h1>
-<p> 
+<p>
 
 <form class="row g-3" action="#" method="post">
 
-<div class="col-md-2">
+  <div class="col-md-2">
     <label for="pId" class="form-label">ID</label>
     <input type="text" class="form-control" name="pId" value="ID AQUI" readonly>
-  </div>  
-<div class="col-md-3">
+  </div>
+  <div class="col-md-3">
     <label for="pReferencia" class="form-label">Nº Referencia</label>
     <input type="text" class="form-control" name="pReferencia" value="REFERENCIA AQUI" readonly>
   </div>
@@ -33,7 +32,7 @@
     <select name="pFabricante" class="form-select">
       <option selected value="0">Escolha...</option>
       <?php
-        // MOSTRAR A LISTA DE FABRICANTES AQUI                   
+      // MOSTRAR A LISTA DE FABRICANTES AQUI                   
       ?>
     </select>
   </div>
@@ -43,11 +42,11 @@
   </div>
   <div class="col-12">
     <label for="pDescricao" class="form-label">Descrição do produto: </label>
-    <textarea class="form-control" name="pDescricao" rows="6" style="resize: none">DESCRIÇÃO AQUI</textarea>    
+    <textarea class="form-control" name="pDescricao" rows="6" style="resize: none">DESCRIÇÃO AQUI</textarea>
   </div>
   <div class="col-12">
     <label for="pResumo" class="form-label">Resumo do produto: </label>
-    <textarea class="form-control" name="pResumo" rows="6" style="resize: none">RESUMO AQUI</textarea>    
+    <textarea class="form-control" name="pResumo" rows="6" style="resize: none">RESUMO AQUI</textarea>
   </div>
   <div class="col-12 text-center">
     <button type="submit" class="btn btn-success">Alterar</button>
@@ -56,5 +55,5 @@
 </form>
 
 <?php
-       require_once 'includes/rodape.inc.php';
+require_once 'includes/rodape.inc.php';
 ?>

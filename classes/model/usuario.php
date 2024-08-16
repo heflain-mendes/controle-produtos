@@ -1,14 +1,18 @@
 <?php
-final class Cliente 
+final class Usuario 
 {
     private int $id;
-    private string $nome;
-    private string $endereco;
-    private string $telefone;
-    private string $cpf;
-    private int $dtNascimeto;
-    private string $email;
-    private string $senha;
+
+    public function __construct(
+        private string $nome,
+        private string $endereco,
+        private string $telefone,
+        private string $cpf,
+        private int $dtNascimeto,
+        private string $email,
+        private string $senha,
+        private string $tipo
+    ) {}
 
     function __get($name) {
         return $this->$name;

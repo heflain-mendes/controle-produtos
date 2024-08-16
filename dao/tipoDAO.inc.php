@@ -12,12 +12,12 @@ final class TipoDAO
         $c = new Conexao();
 
         $this->conn = $c->getConexao();
-        $this->decorator = new GenericDAO($this->conn, "tipo");
+        $this->decorator = new GenericDAO($this->conn, "tipos");
     }
 
     
     public function getById($id) : Tipo | null {
-        $r = $this->decorator->find(["id_tipo" => $id]);
+        $r = $this->decorator->find(["id" => $id]);
 
         $retorno = null;
 
@@ -37,11 +37,8 @@ final class TipoDAO
     private static function assocToTipo($data) : Tipo | null {
         if(!isset($data)) return null;
 
-        $t = new Tipo;
-
-        $t->idTipo = $data["id_tipo"];
-        $t->nome = $data["nome"];
-        $t->valor = $data["valor"];
+        $t = new Tipo($data["nome"]);
+        $t->id= $data["id"];
 
         return $t;
     }
@@ -57,7 +54,6 @@ final class TipoDAO
 
         return $r;
     }
-
 }
 
 

@@ -41,7 +41,7 @@ final class GenericDAO
         return $result;
     }
 
-    public function insert(array $data) {
+    public function insert(array $data) : int {
         $collumns = implode(", ", array_keys($data));
         $values =   ":" . implode(", :", array_keys($data));
 
@@ -57,6 +57,8 @@ final class GenericDAO
         }
 
         $sql->execute();
+
+        return $this->conn->lastInsertId();
     }
 
     public function update(array $data, array $fieldsValues) {

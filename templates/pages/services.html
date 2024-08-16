@@ -81,7 +81,6 @@
         const divDateInput = document.querySelector("#date-service");
         
         function addDate(){
-           
             const lenghtDateInput = divDateInput.querySelectorAll("input").length;
             if(lenghtDateInput < 7){
                 divDateInput.innerHTML += inputAppend.replaceAll('$', lenghtDateInput);

@@ -12,7 +12,7 @@ final class DataDisponivelDAO
         $c = new Conexao();
 
         $this->conn = $c->getConexao();
-        $this->decorator = new GenericDAO($this->conn, "datasDispoviveis");
+        $this->decorator = new GenericDAO($this->conn, "datas_disponiveis");
     }
 
     public function insert(int $idServico, string $data, bool $disponivel) {
@@ -32,13 +32,9 @@ final class DataDisponivelDAO
     private static function assocToDataDisponivel($data) : DataDisponivel | null{
         if(!isset($data)) return null;
 
-        $d = new DataDisponivel();
-
+        $d = new DataDisponivel($data["id_servico"], $data["data"], $data["disponivel"]);
         $d->id = $data["id"];
-        $d->idDisponibilidade = $data["id_disponibilidade"];
-        $d->setData($data["data"]);
-        $d->disponivel = $data["diponivel"];
-
+        
         return $d;
     }
 

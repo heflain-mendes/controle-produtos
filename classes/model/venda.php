@@ -2,18 +2,20 @@
 final class Venda
 {
     private int $id;
-    private int $idCliente;
-    private int $idServico;
-    private float $valorTotal;
-    private int $qtdItens;
+    
+    public function __construct(
+        private int $idUsuario,
+        private int $idServico,
+        private float $valorTotal,
+        private int $qtdItens
+    ) {}
 
     public function __get ($name){
         return $this->$name;
     }
 
-    public function __set($name, $value) : self{
+    public function __set($name, $value){
         $this->$name = $value;
-        return $this;
     }
 }
 ?>
