@@ -11,16 +11,26 @@ if(isset($_REQUEST["opcao"]) && is_numeric($_REQUEST["opcao"])){
 $servicoDAO = new ServicoDAO();
 $datasDAO = new DataDisponivelDAO();
 switch ($opcao) {
-    case 2:
-        $idServico = $servicoDAO->insert(
+    case 1: //get all
+        $servicos = $servicoDAO->getAll();
+        
+        
+        break;
+    case 2: //insert
+        $servico = new Servico(
             $_REQUEST["nome"],
             $_REQUEST["valor"],
             $_REQUEST["descricao"],
             $_REQUEST["tipo"]
         );
 
+        $idServico = $servicoDAO->insert(
+           $servico
+        );
+
         foreach($_REQUEST["datas"] as $data) {
-            $datasDAO->insert($idServico, $data, true);
+            $data = new DataDisponivel($idServico, $data, true);
+            $datasDAO->insert($data);
         }
 
         header("Location: ../views/exibirServicos.php");

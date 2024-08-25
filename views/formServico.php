@@ -39,7 +39,7 @@ $tipos = $_SESSION["tipos"];
       <button type="button" onclick="addDate()" class="mb-2 btn btn-primary mx-1" style="min-width: 100px;">Adicionar</button>
     </div>
     <div class="d-flex" id="data0">
-      <input type="datetime-local" name="datas[]" class="form-control mb-2">
+      <input type="date" name="datas[]" class="form-control mb-2">
       <button type="button" onclick="removeDate(0)" class="mb-2 btn btn-outline-danger mx-1" style="min-width: 100px;">Remover</button>
     </div>
   </div>
@@ -55,7 +55,7 @@ $tipos = $_SESSION["tipos"];
 <script>
   var inputAppend = `
     <div class="d-flex" id="data$">
-      <input type="datetime-local" name="datas[]" class="form-control mb-2">
+      <input type="date" name="datas[]" class="form-control mb-2">
       <button type="button" onclick="removeDate($)" class="mb-2 btn btn-outline-danger mx-1" style="min-width: 100px;">Remover</button>
     </div>
   `;

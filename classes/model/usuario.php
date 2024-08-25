@@ -8,7 +8,7 @@ final class Usuario
         private string $endereco,
         private string $telefone,
         private string $cpf,
-        private int $dtNascimeto,
+        private int $dtNascimento,
         private string $email,
         private string $senha,
         private string $tipo
@@ -20,10 +20,6 @@ final class Usuario
 
     function __set($name, $value) {
         $this->$name = $value;
-    }
-
-    function getDtNascimento() : string {
-        return $this->dt_nascimento;
     }
 
     function setDtNascimento(string $value){

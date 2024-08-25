@@ -15,13 +15,24 @@ final class ServicoDAO
         $this->decorator = new GenericDAO($this->conn, "servicos");
     }
 
-    public function insert(string $nome, float $valor, string $descricao, int $tipo ) {
+    public function insert(Servico $servico) {
         return $this->decorator->insert([
-            "nome" => $nome,
-            "valor" => $valor,
-            "descricao" => $descricao,
-            "id_tipo" => $tipo
+            "nome" => $servico->nome,
+            "valor" => $servico->valor,
+            "descricao" => $servico->descricao,
+            "id_tipo" => $servico->tipo
         ]);
+    }
+
+    public function getById($id) : Servico{
+       $servico = $this->decorator->find($id)[0];
+       return ServicoDAO::assocToServico($servico);
+    }
+
+    public function getAll(){
+        $servicos = $this->decorator->find();
+
+        return ServicoDAO::assocsToServicos($servicos);
     }
 
     public function deleteById(int $id) {

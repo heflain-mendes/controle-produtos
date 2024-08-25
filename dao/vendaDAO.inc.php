@@ -15,12 +15,12 @@ final class TipoDAO
         $this->decorator = new GenericDAO($this->conn, "vendas");
     }
 
-    public function insert(int $idUsuario, int $idProduto, float $valorTotal, int $qtdItem) {
+    public function insert(Venda $venda) {
         $this->decorator->insert([
-            "id_usuario" => $idUsuario,
-            "id_produto" => $idProduto,
-            "valor_total" => $valorTotal,
-            "qtd_itens" => $qtdItem
+            "id_usuario" => $venda->idUsuario,
+            "id_produto" => $venda->idServico,
+            "valor_total" => $venda->valorTotal,
+            "qtd_itens" => $venda->qtdItens
         ]);
     }
 

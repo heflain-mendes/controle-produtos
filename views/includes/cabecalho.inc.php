@@ -10,13 +10,13 @@
         <div class="container">
 <?php
     require_once "../classes/model/usuario.php";
-    
     session_start();
-    $tipo = "C";
+    
+    $menu = "V";
 
     if(isset($_SESSION["usuario"]) && $_SESSION["usuario"] instanceof Usuario){
-      $tipo = $_SESSION["usuario"]->tipo;
+      $menu = 'C';
     }
 
-    require_once "menu$tipo.inc.php";
+    require_once "menu$menu.inc.php";
 ?>          

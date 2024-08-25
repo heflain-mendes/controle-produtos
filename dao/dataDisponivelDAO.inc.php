@@ -15,8 +15,12 @@ final class DataDisponivelDAO
         $this->decorator = new GenericDAO($this->conn, "datas_disponiveis");
     }
 
-    public function insert(int $idServico, string $data, bool $disponivel) {
-        $this->decorator->insert(["id_servico" => $idServico, "data" => $data, "disponivel" => $disponivel]);
+    public function insert(DataDisponivel $dtDisponivel) {
+        $this->decorator->insert([
+            "id_servico" => $dtDisponivel->idServico, 
+            "data" => $dtDisponivel->data, 
+            "disponivel" => $dtDisponivel->disponivel
+        ]);
     }
 
     public function findByIdServico(int $idServico) : array | null {

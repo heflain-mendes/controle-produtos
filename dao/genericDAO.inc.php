@@ -62,23 +62,23 @@ final class GenericDAO
     }
 
     public function update(array $data, array $fieldsValues) {
-        $setClause = $this->getClause($data, ", ");
-        $whereClause = $this->getClause($fieldsValues, " AND ");
-
+        $setClause = $this->getClause($fieldsValues, ", ");
+        $whereClause = $this->getClause($data, " AND ");
+    
         $sql = $this->conn->prepare(
             "UPDATE $this->tableName 
             SET " . $setClause . 
-            "WHERE " . $whereClause
+            " WHERE " . $whereClause
         );
-
+    
         foreach ($fieldsValues as $key => $value) {
             $sql->bindValue(":" . $key, $value);
         }
 
         foreach ($data as $key => $value) {
-            $sql->bindValue($key, $value);
+            $sql->bindValue(":" . $key, $value);
         }
-
+    
         $sql->execute();
     }
 
