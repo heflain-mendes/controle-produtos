@@ -60,7 +60,8 @@
                     <hr>
 
                     <div class="form-floating mb-3">
-                        <input type="password" class="form-control" id="floatingPassword" minlength="4" maxlength="8" placeholder="Senha" name="senha" required>
+                        <input type="password" class="form-control" id="floatingPassword" minlength="4" 
+                        maxlength="8" placeholder="Senha" name="senha" onkeyup="validarSenha()" required>
                         <label for="floatingPassword">Senha</label>
                     </div>
 
@@ -68,12 +69,12 @@
 
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control" id="floatingCPassword" minlength="4" maxlength="8" 
-                        placeholder="Confirmar Senha" name="confirmar_senha" onblur="validarSenha()" required>
+                        placeholder="Confirmar Senha" name="confirmar_senha" onkeyup="validarSenha()" required>
                         <label for="floatingCPassword">Confirmar Senha</label>
                     </div>
 
                     <div id="erroSenha" class="alert alert-danger" role="alert" style="display: none;">
-                        As senhas não coincidem. Por favor, verifique e tente novamente.
+                        As senhas não coincidem.
                     </div>
 
                     <hr>
