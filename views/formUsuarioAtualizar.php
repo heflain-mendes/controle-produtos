@@ -74,17 +74,23 @@ $usuario = $_SESSION["usuario"];
                     <hr>
 
                     <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" id="floatingIsAdmin" name="tipo" <?= $usuario->tipo == "U" ? "checked" : "" ?>>
-                        <label class="form-check-label" for="floatingIsAdmin">É Administrador</label>
+                        <input class="form-check-input" type="checkbox" id="floatingPestador" name="tipo"
+                            <?= $usuario->tipo == "P" ? "checked" : "" ?> <?= $usuario->possuiServicosFuturosAPrestar ? "disabled" : "" ?>>
+                        <label class="form-check-label" for="floatingPestador">É Prestador de serviço</label>
                     </div>
 
                     <div class="d-grid mb-2">
                         <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">atualizar Cadastro</button>
                     </div>
 
-                    <div class="d-grid mb-2">
-                        <a href="../controllers/controllerUsuario.php?opcao=7&id=<?=$usuario->id?>" class="btn btn-lg btn-danger btn-login fw-bold text-uppercase">Remover conta</a>
-                    </div>
+                    <?php
+                    if (!$usuario->possuiServicosFuturosAPrestar || !$usuario->possuiServicosFuturosContratados) {
+                        echo "<div class=\"d-grid mb-2\">
+                        <a href=\"../controllers/controllerUsuario.php?opcao=7\" class=\"btn btn-lg btn-danger btn-login fw-bold text-uppercase\" >Remover conta</a>
+                        </div";
+                    }
+                    ?>
+
 
                     <?php
                     if (isset($_REQUEST["erro"])) {

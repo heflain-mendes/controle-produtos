@@ -2,6 +2,8 @@
 final class Usuario 
 {
     private int $id;
+    private bool $possuiServicosFuturosAPrestar;
+    private bool $possuiServicosFuturosContratados;
 
     public function __construct(
         private string $nome,

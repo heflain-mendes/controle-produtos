@@ -1,0 +1,7 @@
+Requisitos funcionais
+
+RF001: tela de apresentação - A tela de apresentação deve exibir os produto para o visitante, em seu menu deve está as opções de login e cadastro.
+	- Usuário NÃO logado, ao clicar em "contratar" deve ser redirecionado para página de login
+	- Usuário logado, ao clicar em "contratar" o serviço deve ser adicionado em seu carrinho de compras
+
+RF001

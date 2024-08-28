@@ -7,24 +7,27 @@ require_once "../utils/funcoesUteis.php";
 class UsuarioDAO{
     private PDO $conn;
     private genericDAO $decorator;
+    private string $nomeDatabase = "usuarios";
 
     public function __construct()
     {
         $c = new conexao();
         $this->conn = $c->getconexao();
 
-        $decorator = new GenericDAO($this->conn, "usuarios");
+        $decorator = new GenericDAO($this->conn, $this->nomeDatabase);
 
         $this->decorator = $decorator;
     }
 
     public function autenticar($email, $senha) : Usuario | null {
-        $usuario = $this->decorator->find(["email" => $email, "senha" => $senha])[0];
+        $usuario = $this->decorator->find(["email" => $email, "senha" => $senha, "esta_deletado" => 0])[0];
 
         $retorno = null;
 
         if(isset($usuario)){
             $retorno = UsuarioDAO::assocToUsuario($usuario);
+            $retorno->possuiServicosFuturosAPrestar = $this->possuiServicosFuturosAPrestar($usuario->id);
+            $retorno->possuiServicosFuturosContratados = $this->possuiServicosFuturosContratados($usuario->id);
         }
 
         return $retorno;
@@ -64,11 +67,21 @@ class UsuarioDAO{
     }
 
     public function getById(int $id) : Usuario {
-        return UsuarioDAO::assocToUsuario($this->decorator->find(["id" => $id])[0]);
+        $usuario = UsuarioDAO::assocToUsuario($this->decorator->find(["id" => $id, "esta_deletado" => 0])[0]);
+        $usuario->possuiServicosFuturosAPrestar = $this->possuiServicosFuturosAPrestar($usuario->id);
+        $usuario->possuiServicosFuturosContratados = $this->possuiServicosFuturosContratados($usuario->id);
+
+        return $usuario;
     }
 
-    public function delelte(int $id) {
-        $this->decorator->delete(["id" => $id]);
+    public function delete(Usuario $usuario) {
+        $this->decorator->update(["id" => $usuario->id], 
+        ["esta_deletado" => 1, 
+        "email" => null, 
+        "cpf" => null,
+        "email_deletado" => $usuario->email,
+        "cpf_deletado" => $usuario->cpf
+    ]);
     }
 
     private static function assocToUsuario(array $data) : Usuario | null{
@@ -88,5 +101,49 @@ class UsuarioDAO{
         $c->id = $data["id"];
         
         return $c;
+    }
+
+    private function possuiServicosFuturosAPrestar($idUsuario) : bool {
+        $sql = $this->conn->prepare(
+            "SELECT EXISTS(
+                SELECT *
+                FROM servicos as s
+                JOIN datas_disponiveis as dd
+                ON s.id = dd.id_servico
+                WHERE s.id_prestador = :id_usuario
+                    AND dd.data > CURRENT_DATE
+                    AND dd.disponivel = 0
+            ) as existe_registo"
+        );
+
+        $sql->bindValue(":id_usuario", $idUsuario);
+
+        $sql->execute();
+
+        $r = $sql->fetch(PDO::FETCH_ASSOC);
+
+        return (bool)$r["existe_registo"];
+    }
+
+    private function possuiServicosFuturosContratados($idUsuario) : bool {
+        $sql = $this->conn->prepare(
+            "SELECT EXISTS(
+                SELECT *
+                FROM datas_disponiveis as dd
+                JOIN vendas as v
+                ON v.id_datas_disponiveis = dd.id
+                WHERE v.id_contratante = :id_usuario
+                    AND dd.data > CURRENT_DATE
+                    AND dd.disponivel = 0
+            ) as existe_registo"
+        );
+
+        $sql->bindValue(":id_usuario", $idUsuario);
+
+        $sql->execute();
+
+        $r = $sql->fetch(PDO::FETCH_ASSOC);
+
+        return (bool)$r["existe_registo"];
     }
 }

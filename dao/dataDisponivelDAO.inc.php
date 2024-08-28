@@ -2,17 +2,19 @@
 require_once "conexao.inc.php";
 require_once "genericDAO.inc.php";
 require_once "../classes/model/dataDisponivel.php";
+require_once "../utils/funcoesUteis.php";
 
 final class DataDisponivelDAO
 {
     private PDO $conn;
     private GenericDAO $decorator;
+    private string $nomeDatabase = "datas_disponiveis";
 
     public function __construct() {
         $c = new Conexao();
 
         $this->conn = $c->getConexao();
-        $this->decorator = new GenericDAO($this->conn, "datas_disponiveis");
+        $this->decorator = new GenericDAO($this->conn, $this->nomeDatabase);
     }
 
     public function insert(DataDisponivel $dtDisponivel) {

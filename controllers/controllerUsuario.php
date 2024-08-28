@@ -1,5 +1,6 @@
 <?php
 require_once "../dao/usuarioDAO.inc.php";
+require_once "../classes/model/usuario.php";
 $opcao = (int)$_REQUEST["opcao"];
 
 switch ($opcao) {
@@ -37,7 +38,7 @@ switch ($opcao) {
             $tipo = 'C';
 
             if (isset($_REQUEST["tipo"])) {
-                $tipo = 'U';
+                $tipo = 'P';
             }
 
             $usuario = new Usuario(
@@ -77,7 +78,7 @@ switch ($opcao) {
             $tipo = 'C';
 
             if (isset($_REQUEST["tipo"])) {
-                $tipo = 'U';
+                $tipo = 'P';
             }
 
             $usuario = new Usuario(
@@ -90,7 +91,7 @@ switch ($opcao) {
                 "",
                 $tipo
             );
-            $usuario->id = $_REQUEST["id"];
+            $usuario->id = $_SESSION["usuario"]->id;
 
             $usuarioDao->updateSemSenha($usuario);
 
@@ -116,12 +117,13 @@ switch ($opcao) {
             header("Location: ../views/formUsuarioAtualizarSenha.php?erro=1"); //falha ao atualizar a senha
         }
         break;
-    case 7:
+    case 7: //deleção
         try{
+            session_start();
             $usuarioDao = new UsuarioDao();
-            $id = $_REQUEST["id"];
+            $usuario = $_SESSION["usuario"];
 
-            $usuarioDao->delelte($id);
+            $usuarioDao->delete($usuario);
 
             header("Location: controllerUsuario.php?opcao=2"); //logout
         }catch(Exception $e){

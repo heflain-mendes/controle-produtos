@@ -1,5 +1,5 @@
 <?php
-  // Menu cliente
+  // Menu do prestador de serviço
   $usuario = $_SESSION["usuario"];
 ?>
 
@@ -16,7 +16,7 @@
         Serviços
       </a>
       <ul class="dropdown-menu">
-        <?= $usuario->tipo == "U" ? "<li><a class=\"dropdown-item\" href=\"../controllers/controllerTipo.php?opcao=1\">Cadastrar</a></li>" : "" ?>
+        <li><a class="dropdown-item" href="../controllers/controllerTipo.php?opcao=1">Cadastrar</a></li>
         <li><a class="dropdown-item" href="exibirServicos.php">Consultar</a></li>
       </ul>
     </li>

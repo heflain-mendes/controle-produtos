@@ -80,8 +80,8 @@
                     <hr>
 
                     <div class="form-check form-switch mb-3">
-                        <input class="form-check-input" type="checkbox" id="floatingIsAdmin" name="tipo">
-                        <label class="form-check-label" for="floatingIsAdmin">É Administrador</label>
+                        <input class="form-check-input" type="checkbox" id="floatingPestador" name="tipo">
+                        <label class="form-check-label" for="floatingPestador">É prestador de serviço</label>
                     </div>
 
                     <div class="d-grid mb-2">

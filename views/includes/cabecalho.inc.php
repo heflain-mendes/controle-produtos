@@ -15,7 +15,7 @@
     $menu = "V";
 
     if(isset($_SESSION["usuario"]) && $_SESSION["usuario"] instanceof Usuario){
-      $menu = 'C';
+      $menu = $_SESSION["usuario"]->tipo;
     }
 
     require_once "menu$menu.inc.php";

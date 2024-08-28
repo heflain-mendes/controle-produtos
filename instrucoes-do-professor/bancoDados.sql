@@ -3,11 +3,14 @@ CREATE TABLE `usuarios` (
   `nome` varchar(50) NOT NULL,
   `endereco` varchar(50) NOT NULL,
   `telefone` varchar(20) NOT NULL,
-  `cpf` varchar(13) NOT NULL,
+  `cpf` varchar(13) NOT NULL UNIQUE,
   `dt_nascimento` date NOT NULL,
   `email` varchar(50) NOT NULL UNIQUE,
   `senha` varchar(8) NOT NULL,
-  `tipo` varchar(1) NOT NULL
+  `tipo` varchar(1) NOT NULL,
+  `esta_deletado` tinyint(1) NOT NULL DEFAULT 0,
+  `email_deletado` varchar(50),
+  `cpf_deletado` varchar(13)
 );
 
 CREATE TABLE `tipos` (
@@ -17,27 +20,28 @@ CREATE TABLE `tipos` (
 
 CREATE TABLE `servicos` (
   `id` int AUTO_INCREMENT PRIMARY KEY,
+  `id_prestador` int NOT NULL,
+  FOREIGN KEY (id_prestador) REFERENCES usuarios(id),
   `nome` varchar(50) NOT NULL,
   `valor` float NOT NULL,
   `descricao` text NOT NULL,
   `id_tipo` int(11) NOT NULL,
-  FOREIGN KEY (id_tipo) REFERENCES tipos(id)
+  FOREIGN KEY (id_tipo) REFERENCES tipos(id),
+  `esta_deletado` tinyint(1) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE `datas_disponiveis` (
   `id` int AUTO_INCREMENT PRIMARY KEY,
   `id_servico` int,
-  FOREIGN KEY (id_servico) REFERENCES servicos(id) ON DELETE SET NULL,
+  FOREIGN KEY (id_servico) REFERENCES servicos(id),
   `data` date NOT NULL,
-  `disponivel` tinyint(1) NOT NULL
+  `disponivel` tinyint(1) NOT NULL DEFAULT 1
 );
 
 CREATE TABLE `vendas` (
-  `id` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
-  FOREIGN KEY (id_usuario) REFERENCES usuarios(id) ON DELETE SET NULL,
-  `id_servico` int(11) NOT NULL,
-  FOREIGN KEY (id_servico) REFERENCES servicos(id) ON DELETE SET NULL,
-  `valor_total` float NOT NULL,
-  `qtd_itens` int(11) NOT NULL
+  `id` int(11) AUTO_INCREMENT PRIMARY KEY,
+  `id_contratante` int(11) NOT NULL,
+  FOREIGN KEY (id_contratante) REFERENCES usuarios(id),
+  `id_datas_disponiveis` int(11) NOT NULL,
+  FOREIGN KEY (id_datas_disponiveis) REFERENCES datas_disponiveis(id)
 );

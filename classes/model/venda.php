@@ -5,7 +5,7 @@ final class Venda
     
     public function __construct(
         private int $idUsuario,
-        private int $idServico,
+        private int $idDatasDisponiveis,
         private float $valorTotal,
         private int $qtdItens
     ) {}
