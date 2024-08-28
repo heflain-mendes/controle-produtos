@@ -18,17 +18,14 @@ function validarDataNascimento(){
     const dataAtual = new Date();
     const msgErro = document.querySelector("#erroDtNasc");
 
-    // Calcula a diferença em anos
     let idade = dataAtual.getFullYear() - dataNasc.getFullYear();
     const mes = dataAtual.getMonth() - dataNasc.getMonth();
     const dia = dataAtual.getDate() - dataNasc.getDate();
 
-    // Ajusta a idade se ainda não tiver feito aniversário este ano
     if (mes < 0 || (mes === 0 && dia < 0)) {
         idade--;
     }
 
-    // Retorna true se a idade for 18 ou mais, caso contrário, retorna false
     if(idade < 18){
         formDtNasc.classList.add("isInvalid");
         msgErro.style.display = "block";
@@ -36,10 +33,4 @@ function validarDataNascimento(){
         formDtNasc.classList.remove("isInvalid");
         msgErro.style.display = "none";
     }
-}
-
-function validarSubmit() {
-    camposInvalid = document.querySelectorAll(".isInvalid");
-
-    return camposInvalid.length == 0;
 }

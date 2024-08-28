@@ -1,5 +1,6 @@
 <?php
 require_once "../dao/servicoDAO.inc.php";
+require_once "../classes/model/usuario.php";
 require_once "../dao/dataDisponivelDAO.inc.php";
 
 $opcao = 0;
@@ -14,14 +15,16 @@ switch ($opcao) {
     case 1: //get all
         $servicos = $servicoDAO->getAll();
         
-        
         break;
     case 2: //insert
+        session_start();
         $servico = new Servico(
             $_REQUEST["nome"],
             $_REQUEST["valor"],
+            $_REQUEST["cidade"],
             $_REQUEST["descricao"],
-            $_REQUEST["tipo"]
+            $_REQUEST["tipo"],
+            $_SESSION["usuario"]->id
         );
 
         $idServico = $servicoDAO->insert(
@@ -29,7 +32,7 @@ switch ($opcao) {
         );
 
         foreach($_REQUEST["datas"] as $data) {
-            $data = new DataDisponivel($idServico, $data, true);
+            $data = new DataDisponivel($idServico, strtotime($data), true);
             $datasDAO->insert($data);
         }
 

@@ -5,14 +5,14 @@ require_once "tipo.php";
 final class Servico 
 {
     private int $id;
-    private Tipo $tipo;
-    private $datasDisponiveis;
     
     public function __construct(
         private string $nome,
         private float $valor,
+        private string $cidade,
         private string $descricao,
-        private int $idTipo
+        private int $idTipo,
+        private int $idPrestador
     ) {}
 
     public function __get ($name){

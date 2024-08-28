@@ -49,7 +49,7 @@
                     <hr>
 
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="floatingInputDtNasc" name="dt_nascimento" onblur="validarDataNascimento()" required>
+                        <input type="date" class="form-control" id="floatingInputDtNasc" name="dt_nascimento" onkeydown="validarDataNascimento()" required>
                         <label for="floatingInputDtNasc">Data Nascimento</label>
                     </div>
 
@@ -61,7 +61,7 @@
 
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control" id="floatingPassword" minlength="4" 
-                        maxlength="8" placeholder="Senha" name="senha" onkeyup="validarSenha()" required>
+                        maxlength="8" placeholder="Senha" name="senha" onkeydown="validarSenha()" required>
                         <label for="floatingPassword">Senha</label>
                     </div>
 
@@ -69,7 +69,7 @@
 
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control" id="floatingCPassword" minlength="4" maxlength="8" 
-                        placeholder="Confirmar Senha" name="confirmar_senha" onkeyup="validarSenha()" required>
+                        placeholder="Confirmar Senha" name="confirmar_senha" onkeydown="validarSenha()" required>
                         <label for="floatingCPassword">Confirmar Senha</label>
                     </div>
 
@@ -119,7 +119,8 @@
     </div>
 </div>
 
-<script src="includes/scripts/validacoes.js"></script>
+<script src="includes/scripts/validacoesFormUsuario.js"></script>
+<script src="includes/scripts/validarSubmmit.js"></script>
 
 <!-- Rodape -->
 

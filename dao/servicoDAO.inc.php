@@ -19,8 +19,10 @@ final class ServicoDAO
         return $this->decorator->insert([
             "nome" => $servico->nome,
             "valor" => $servico->valor,
+            "cidade" => $servico->cidade,
             "descricao" => $servico->descricao,
-            "id_tipo" => $servico->tipo
+            "id_tipo" => $servico->idTipo,
+            "id_prestador" => $servico->idPrestador
         ]);
     }
 
@@ -43,8 +45,9 @@ final class ServicoDAO
         $this->decorator->update([
             "nome" => $servico->nome,
             "valor" => $servico->valor,
+            "cidade" => $servico->cidade,
             "descricao" => $servico->descricao,
-            "id_tipo" => $servico->tipo
+            "id_tipo" => $servico->idTtipo
         ],[
             "id_servico" => $servico->idServico
         ]);
@@ -53,7 +56,14 @@ final class ServicoDAO
     private static function assocToServico($data) : Servico | null {
         if(!isset($data)) return null;
 
-        $s = new Servico($data["nome"], $data["valor"], $data["descricao"], $data["id_tipo"]);
+        $s = new Servico(
+            $data["nome"], 
+            $data["valor"], 
+            $data["cidade"], 
+            $data["descricao"], 
+            $data["id_tipo"],
+            $data["id_prestador"]
+        );
         $s->id = $data["id"];
         
         return $s;

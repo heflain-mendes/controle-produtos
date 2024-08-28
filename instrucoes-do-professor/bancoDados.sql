@@ -25,6 +25,7 @@ CREATE TABLE `servicos` (
   `nome` varchar(50) NOT NULL,
   `valor` float NOT NULL,
   `descricao` text NOT NULL,
+  `cidade` varchar(50) NOT NULL,
   `id_tipo` int(11) NOT NULL,
   FOREIGN KEY (id_tipo) REFERENCES tipos(id),
   `esta_deletado` tinyint(1) NOT NULL DEFAULT 0

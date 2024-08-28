@@ -62,7 +62,7 @@ $usuario = $_SESSION["usuario"];
                     <hr>
 
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="floatingInputDtNasc" name="dt_nascimento" onblur="validarDataNascimento()"
+                        <input type="date" class="form-control" id="floatingInputDtNasc" name="dt_nascimento" onkeydown="validarDataNascimento()"
                             value="<?= parseISO($usuario->dtNascimento) ?>">
                         <label for="floatingInputDtNasc">Data Nascimento</label>
                     </div>
@@ -124,7 +124,8 @@ $usuario = $_SESSION["usuario"];
     </div>
 </div>
 
-<script src="includes/scripts/validacoes.js"></script>
+<script src="includes/scripts/validacoesFormUsuario.js"></script>
+<script src="includes/scripts/validarSubmmit.js"></script>
 
 <!-- Rodape -->
 

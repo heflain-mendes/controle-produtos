@@ -66,7 +66,8 @@
     </div>
 </div>
 
-<script src="includes/scripts/validacoes.js"></script>
+<script src="includes/scripts/validacoesFormUsuario.js"></script>
+<script src="includes/scripts/validarSubmmit.js"></script>
 
 <!-- Rodape -->
 
