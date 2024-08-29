@@ -5,6 +5,7 @@ require_once "tipo.php";
 final class Servico 
 {
     private int $id;
+    private string $nomeTipo;
     
     public function __construct(
         private string $nome,

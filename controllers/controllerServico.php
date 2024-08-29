@@ -13,8 +13,13 @@ $servicoDAO = new ServicoDAO();
 $datasDAO = new DataDisponivelDAO();
 switch ($opcao) {
     case 1: //get all
-        $servicos = $servicoDAO->getAll();
+        session_start();
+        $idUsuario = $_SESSION["usuario"]->id;
+        $servicos = $servicoDAO->getByIdUsuario($idUsuario);
         
+        $_SESSION["servicos"] = $servicos;
+
+        header("Location: ../views/exibirServicos.php");
         break;
     case 2: //insert
         session_start();
@@ -38,6 +43,12 @@ switch ($opcao) {
 
         header("Location: ../views/exibirServicos.php");
         break;
+    case 3: //atualizar
+        session_start();
+        $_SESSION["servico"] = $servicoDAO->getById($_REQUEST["id"]);
+
+        header("Location: controllerTipo.php?opcao=2");
+
     default:
         # code...
         break;

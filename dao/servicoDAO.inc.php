@@ -27,14 +27,20 @@ final class ServicoDAO
     }
 
     public function getById($id) : Servico{
-       $servico = $this->decorator->find($id)[0];
+       $servico = $this->decorator->find(["id" => $id])[0];
        return ServicoDAO::assocToServico($servico);
     }
 
-    public function getAll(){
-        $servicos = $this->decorator->find();
+    public function getByIdUsuario($idUsuario) : array {
+        $servicosAssoc = $this->decorator->find(["id_prestador" => $idUsuario]);
+        $servicosObj = ServicoDAO::assocsToServicos($servicosAssoc);
 
-        return ServicoDAO::assocsToServicos($servicos);
+
+        foreach ($servicosObj as $servico) {
+            $servico->nomeTipo = $this->getTipo($servico->idTipo);
+        }
+
+        return $servicosObj;
     }
 
     public function deleteById(int $id) {
@@ -79,6 +85,16 @@ final class ServicoDAO
         }
 
         return $r;
+    }
+
+    private function getTipo($id) : string {
+        $sql = $this->conn->prepare("SELECT nome FROM tipos WHERE id = :id");
+
+        $sql->bindParam(":id", $id);
+
+        $sql->execute();
+
+        return $sql->fetch(PDO::FETCH_ASSOC)["nome"];
     }
 }
 ?>

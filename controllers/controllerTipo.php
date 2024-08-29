@@ -19,11 +19,6 @@ switch ($opcao) {
         if($opcao == 1) header("Location: ../views/formServico.php");
         else header("Location: ../views/formServicoAtualizar.php");
         break;
-    case 3: //get by id
-        session_start();
-        $id = $_SESSION["id"];
-        $tipo = $tipoDAO->getById($id);
-        //falta implementar
     default:
         # code...
         break;
