@@ -35,11 +35,6 @@ final class ServicoDAO
         $servicosAssoc = $this->decorator->find(["id_prestador" => $idUsuario]);
         $servicosObj = ServicoDAO::assocsToServicos($servicosAssoc);
 
-
-        foreach ($servicosObj as $servico) {
-            $servico->nomeTipo = $this->getTipo($servico->idTipo);
-        }
-
         return $servicosObj;
     }
 
@@ -85,16 +80,6 @@ final class ServicoDAO
         }
 
         return $r;
-    }
-
-    private function getTipo($id) : string {
-        $sql = $this->conn->prepare("SELECT nome FROM tipos WHERE id = :id");
-
-        $sql->bindParam(":id", $id);
-
-        $sql->execute();
-
-        return $sql->fetch(PDO::FETCH_ASSOC)["nome"];
     }
 }
 ?>

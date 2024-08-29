@@ -20,7 +20,7 @@ final class DataDisponivelDAO
     public function insert(DataDisponivel $dtDisponivel) {
         $this->decorator->insert([
             "id_servico" => $dtDisponivel->idServico, 
-            "data" => $dtDisponivel->data, 
+            "data" => parseISO($dtDisponivel->data), 
             "disponivel" => $dtDisponivel->disponivel
         ]);
     }
@@ -28,7 +28,9 @@ final class DataDisponivelDAO
     public function findByIdServico(int $idServico) : array | null {
         $r = $this->decorator->find(["id_servico" => $idServico]);
 
-        return DataDisponivelDAO::assocsToDatasDisponiveis($r);
+        $rObj = DataDisponivelDAO::assocsToDatasDisponiveis($r);
+
+        return $rObj;
     }
 
     public function deleteByIdServico(int $idServico) {
@@ -38,7 +40,7 @@ final class DataDisponivelDAO
     private static function assocToDataDisponivel($data) : DataDisponivel | null{
         if(!isset($data)) return null;
 
-        $d = new DataDisponivel($data["id_servico"], $data["data"], $data["disponivel"]);
+        $d = new DataDisponivel($data["id_servico"], strtotime($data["data"]), $data["disponivel"]);
         $d->id = $data["id"];
         
         return $d;
@@ -48,7 +50,7 @@ final class DataDisponivelDAO
         if(!isset($data)) return null;
 
         $r = [];
-        foreach($r as $item){
+        foreach($data as $item){
             $r[] = DataDisponivelDAO::assocToDataDisponivel($item);
         }
 

@@ -16,10 +16,6 @@ final class DataDisponivel {
         return $this->$name;
     }
 
-    public function getData() : string {
-        return $this->data;
-    }
-
     public function setData(string $value) {
         $this->data = strtotime($value);
     }

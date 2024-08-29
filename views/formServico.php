@@ -21,7 +21,7 @@ $tipos = $_SESSION["tipos"];
   <div class="col-md-3">
     <label for="tipo" class="form-label">Tipo: </label>
     <select name="tipo" class="form-select">
-      <option selected value="0">Escolha...</option>
+      <option selected disabled value="0">Escolha...</option>
       <?php
       foreach ($tipos as $t) {
         echo "<option value=$t->id>$t->nome</option>";

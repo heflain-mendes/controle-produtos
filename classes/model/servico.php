@@ -5,7 +5,10 @@ require_once "tipo.php";
 final class Servico 
 {
     private int $id;
-    private string $nomeTipo;
+    private Tipo $tipo;
+    private array $datasDisponiveis;
+    private bool $possuiServicoAFazer = false;
+
     
     public function __construct(
         private string $nome,
