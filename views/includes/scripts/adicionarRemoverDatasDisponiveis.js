@@ -10,7 +10,7 @@ var inputAppend = `
   function addDate() {
     const lenghtDateInput = divDateInput.querySelectorAll("input").length;
     const msgErro = document.getElementById("erroDataMinima");
-    if (lenghtDateInput < 5) {
+    if (lenghtDateInput < 7) {
       msgErro.insertAdjacentHTML("beforebegin", inputAppend.replaceAll('$', lenghtDateInput));
     }
   }

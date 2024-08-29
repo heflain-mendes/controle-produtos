@@ -11,11 +11,11 @@
             </div>
             <div class="card-body p-4 p-sm-5">
                 <h5 class="card-title text-center mb-5 fw-light fs-5">Entre com sua nova senha</h5>
-                <form onsubmit="return validarSubmit()" action="../controllers/controllerUsuario.php" method="get">
+                <form action="../controllers/controllerUsuario.php" method="get">
 
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control" id="floatingPassword" minlength="4" 
-                        maxlength="8" placeholder="Senha" name="senha" onkeydown="validarSenha()" required>
+                        maxlength="8" placeholder="Senha" name="senha" oninput="validarSenha()" required>
                         <label for="floatingPassword">Nova Senha</label>
                     </div>
 
@@ -23,7 +23,7 @@
 
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control" id="floatingCPassword" minlength="4" maxlength="8" 
-                        placeholder="Confirmar Senha" name="confirmar_senha" onkeydown="validarSenha()" required>
+                        placeholder="Confirmar Senha" name="confirmar_senha" oninput="validarSenha()" required>
                         <label for="floatingCPassword">Confirmar Senha</label>
                     </div>
 
@@ -65,7 +65,6 @@
 </div>
 
 <script src="includes/scripts/validacoesFormUsuario.js"></script>
-<script src="includes/scripts/validarSubmmit.js"></script>
 
 <!-- Rodape -->
 

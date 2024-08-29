@@ -9,7 +9,7 @@ $tipos = $_SESSION["tipos"];
 <h1 class="text-center">Inclusão de serviço</h1>
 <p>
 
-<form onsubmit="return validarSubmit()" class="row g-3" action="../controllers/controllerServico.php" method="post">
+<form class="row g-3" action="../controllers/controllerServico.php" method="post">
   <div class="col-md-6">
     <label for="nome" class="form-label">Nome: </label>
     <input type="text" class="form-control" name="nome" minlength="10" maxlength="50">
@@ -47,7 +47,7 @@ $tipos = $_SESSION["tipos"];
       <button type="button" onclick="addDate()" class="mb-2 btn btn-primary mx-1" style="min-width: 100px;">Adicionar</button>
     </div>
     <div class="d-flex" id="data0">
-      <input type="date" name="datas[]" onchange="validarData()" class="form-control mb-2 data_input">
+      <input type="date" name="datas[]" oninput="validarData()" class="form-control mb-2 data_input">
       <button type="button" onclick="removeDate(0)" class="mb-2 btn btn-outline-danger mx-1" style="min-width: 100px;">Remover</button>
     </div>
 
@@ -66,7 +66,6 @@ $tipos = $_SESSION["tipos"];
 
 <script src="includes/scripts/validacoesFormServico.js"></script>
 <script src="includes/scripts/adicionarRemoverDatasDisponiveis.js"></script>
-<script src="includes/scripts/validarSubmmit.js"></script>
 
 <?php
 require_once 'includes/rodape.inc.php';

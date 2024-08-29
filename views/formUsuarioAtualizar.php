@@ -16,7 +16,7 @@ $usuario = $_SESSION["usuario"];
             </div>
             <div class="card-body p-4 p-sm-5">
                 <h5 class="card-title text-center mb-5 fw-light fs-5">Veja suas informações de Cadastro</h5>
-                <form onsubmit="return validarSubmit()" action="../controllers/controllerUsuario.php" method="get">
+                <form action="../controllers/controllerUsuario.php" method="get">
 
                     <div class="form-floating mb-3">
 
@@ -44,8 +44,8 @@ $usuario = $_SESSION["usuario"];
                     <hr>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInputTel" minlength="10" maxlength="20"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="XXXXXXXXXXX" name="telefone"
+                        <input type="text" class="form-control" id="floatingInputTel"
+                            oninput="validarTelefone(this)" placeholder="XXXXXXXXXXX" name="telefone"
                             value="<?= $usuario->telefone ?>">
                         <label for="floatingInputTel">Telefone</label>
                     </div>
@@ -53,8 +53,8 @@ $usuario = $_SESSION["usuario"];
                     <hr>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInputCPF" minlength="13" maxlength="13"
-                            oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="XXXXXXXXXXX" name="cpf"
+                        <input type="text" class="form-control" id="floatingInputCPF"
+                            oninput="validarCPF(this)" placeholder="XXXXXXXXXXX" name="cpf"
                             value="<?= $usuario->cpf ?>">
                         <label for="floatingInputCPF">CPF</label>
                     </div>
@@ -62,7 +62,7 @@ $usuario = $_SESSION["usuario"];
                     <hr>
 
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="floatingInputDtNasc" name="dt_nascimento" onkeydown="validarDataNascimento()"
+                        <input type="date" class="form-control" id="floatingInputDtNasc" name="dt_nascimento" oninput="validarDataNascimento()"
                             value="<?= parseISO($usuario->dtNascimento) ?>">
                         <label for="floatingInputDtNasc">Data Nascimento</label>
                     </div>
@@ -125,7 +125,6 @@ $usuario = $_SESSION["usuario"];
 </div>
 
 <script src="includes/scripts/validacoesFormUsuario.js"></script>
-<script src="includes/scripts/validarSubmmit.js"></script>
 
 <!-- Rodape -->
 

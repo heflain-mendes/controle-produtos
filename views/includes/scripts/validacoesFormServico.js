@@ -13,9 +13,9 @@ function validarData(){
 
         if(dataServico < dataAtual){
             possuiErro = true;
-            data.classList.add("isInvalid");
+            data.setCustomValidity("O serviço deve ser agendado para uma data futura.");
         }else{
-            data.classList.remove("isInvalid");
+            data.setCustomValidity("");
         }
     });
 

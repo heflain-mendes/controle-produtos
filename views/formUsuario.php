@@ -11,7 +11,7 @@
             </div>
             <div class="card-body p-4 p-sm-5">
                 <h5 class="card-title text-center mb-5 fw-light fs-5">Entre com suas informações de Cadastro</h5>
-                <form onsubmit="return validarSubmit()" action="../controllers/controllerUsuario.php" method="get">
+                <form action="../controllers/controllerUsuario.php" method="get">
 
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" minlength="3" maxlength="50" id="floatingInputNome" placeholder="José" name="nome" required>
@@ -35,21 +35,21 @@
                     <hr>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInputTel" minlength="10" maxlength="20" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="XXXXXXXXXXX" name="telefone" required>
+                        <input type="text" class="form-control" id="floatingInputTel" oninput="validarTelefone(this)" placeholder="XXXXXXXXXXX" name="telefone" required>
                         <label for="floatingInputTel">Telefone</label>
                     </div>
 
                     <hr>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInputCPF" minlength="13" maxlength="13" oninput="this.value = this.value.replace(/[^0-9]/g, '');" placeholder="XXXXXXXXXXX" name="cpf" required>
+                        <input type="text" class="form-control" id="floatingInputCPF" oninput="validarCPF(this)" placeholder="XXXXXXXXXXX" name="cpf" required>
                         <label for="floatingInputCPF">CPF</label>
                     </div>
 
                     <hr>
 
                     <div class="form-floating mb-3">
-                        <input type="date" class="form-control" id="floatingInputDtNasc" name="dt_nascimento" onkeydown="validarDataNascimento()" required>
+                        <input type="date" class="form-control" id="floatingInputDtNasc" name="dt_nascimento" oninput="validarDataNascimento()" required>
                         <label for="floatingInputDtNasc">Data Nascimento</label>
                     </div>
 
@@ -61,7 +61,7 @@
 
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control" id="floatingPassword" minlength="4" 
-                        maxlength="8" placeholder="Senha" name="senha" onkeydown="validarSenha()" required>
+                        maxlength="8" placeholder="Senha" name="senha" oninput="validarSenha()" required>
                         <label for="floatingPassword">Senha</label>
                     </div>
 
@@ -69,12 +69,12 @@
 
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control" id="floatingCPassword" minlength="4" maxlength="8" 
-                        placeholder="Confirmar Senha" name="confirmar_senha" onkeydown="validarSenha()" required>
+                        placeholder="Confirmar Senha" name="confirmar_senha" oninput="validarSenha()" required>
                         <label for="floatingCPassword">Confirmar Senha</label>
                     </div>
 
                     <div id="erroSenha" class="alert alert-danger" role="alert" style="display: none;">
-                        As senhas não coincidem.
+                        A senha e confirmação de senha são diferentes.
                     </div>
 
                     <hr>
@@ -120,7 +120,6 @@
 </div>
 
 <script src="includes/scripts/validacoesFormUsuario.js"></script>
-<script src="includes/scripts/validarSubmmit.js"></script>
 
 <!-- Rodape -->
 
