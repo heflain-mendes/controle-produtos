@@ -36,25 +36,7 @@
                     </div>
 
                     <?php
-                    if (isset($_REQUEST["erro"])) {
-                        $msg = "";
-                        $alert = "";
-                        switch ($_REQUEST["erro"]) {
-                            case 0:
-                                $msg = "senha atualiza com sucesso";
-                                $alert = "alert-success";
-                                break;
-                            case 1:
-                                $msg = "Erro ao atualizar senha";
-                                $alert = "alert-danger";
-                                break;
-                        }
-
-                        echo
-                        '<div class="alert ' . $alert . '" role="alert">'
-                            . $msg .
-                            '</div>';
-                    }
+                        require_once "includes/mensagens.inc.php";
                     ?>
 
                     <input type="hidden" value="6" name="opcao">

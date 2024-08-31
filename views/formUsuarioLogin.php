@@ -32,29 +32,7 @@
                     </div>
 
                     <?php
-                    if (isset($_REQUEST["erro"])) {
-                        $msg = "";
-                        $alert = "";
-                        switch ($_REQUEST["erro"]) {
-                            case 0:
-                                $msg = "Usuário cadastrado com sucesso";
-                                $alert = "alert-success";
-                                break;
-                            case 1:
-                                $msg = "Usuário não encontrado";
-                                $alert = "alert-danger";
-                                break;
-                            case 2:
-                                $msg = "Erro ao fazer o login";
-                                $alert = "alert-danger";
-                                break;
-                        }
-
-                        echo
-                        '<div class="alert ' . $alert . '" role="alert">'
-                            . $msg .
-                            '</div>';
-                    }
+                        require_once "includes/mensagens.inc.php";
                     ?>
 
                     <a class="d-block text-center mt-2 small" href="formUsuario.php">Não possui uma conta? Cadastre-se aqui</a>

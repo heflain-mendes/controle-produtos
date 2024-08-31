@@ -16,7 +16,7 @@ $tipos = $_SESSION["tipos"];
   </div>
   <div class="col-md-3">
     <label for="valor" class="form-label">Valor: </label>
-    <input type="number" class="form-control" name="valor">
+    <input type="number" class="form-control" name="valor" lang="pt-BR" step="0.01">
   </div>
   <div class="col-md-3">
     <label for="tipo" class="form-label">Tipo: </label>
@@ -32,7 +32,7 @@ $tipos = $_SESSION["tipos"];
 
   <div class="col-12">
     <label for="descricao" class="form-label">Descrição do serviço: </label>
-    <textarea class="form-control" name="descricao" minlength="20" rows="6" style="resize: none"></textarea>
+    <textarea class="form-control" name="descricao" minlength="10" rows="5" style="resize: none"></textarea>
   </div>
 
   <div class="col-md-6">
@@ -62,6 +62,11 @@ $tipos = $_SESSION["tipos"];
     <button type="submit" class="btn btn-primary">Incluir</button>
     <button type="reset" class="btn btn-danger">Cancelar</button>
   </div>
+
+  <?php
+  require_once "includes/mensagens.inc.php";
+  ?>
+
 </form>
 
 <script src="includes/scripts/validacoesFormServico.js"></script>

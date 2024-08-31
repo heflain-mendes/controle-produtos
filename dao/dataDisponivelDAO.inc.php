@@ -33,8 +33,12 @@ final class DataDisponivelDAO
         return $rObj;
     }
 
-    public function deleteByIdServico(int $idServico) {
-        $this->decorator->delete(["id_servico" => $idServico]);
+    public function update(array $datasDisponiveis, int $idServico) {
+        $this->decorator->delete(["id_servico" => $idServico, "disponivel" => 1]);
+
+        foreach($datasDisponiveis as $d) {
+            $this->insert(new DataDisponivel($idServico, strtotime($d), true));
+        }
     }
 
     private static function assocToDataDisponivel($data) : DataDisponivel | null{

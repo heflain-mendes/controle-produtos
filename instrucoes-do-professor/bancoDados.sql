@@ -3,14 +3,14 @@ CREATE TABLE `usuarios` (
   `nome` varchar(50) NOT NULL,
   `endereco` varchar(50) NOT NULL,
   `telefone` varchar(20) NOT NULL,
-  `cpf` varchar(13) NOT NULL UNIQUE,
+  `cpf_cnpj` varchar(20) NOT NULL UNIQUE,
   `dt_nascimento` date NOT NULL,
   `email` varchar(50) NOT NULL UNIQUE,
   `senha` varchar(8) NOT NULL,
   `tipo` varchar(1) NOT NULL,
   `esta_deletado` tinyint(1) NOT NULL DEFAULT 0,
   `email_deletado` varchar(50),
-  `cpf_deletado` varchar(13)
+  `cpf_cnpj_deletado` varchar(20)
 );
 
 CREATE TABLE `tipos` (

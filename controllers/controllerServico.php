@@ -23,12 +23,17 @@ switch ($opcao) {
         foreach($servicos as $servico) {
             $servico->tipo = $tipoDAO->getById($servico->idTipo);
             $datasDisponiveis = $datasDAO->findByIdServico($servico->id);
+
+            $possuiServicoAFazer = false;
+
             foreach ($datasDisponiveis as $d) {
                 if(!$d->disponivel && $d->data > strtotime('today')) {
-                    $servico->possuiServicoAFazer = true;
+                    $possuiServicoAFazer = true;
                     continue;
                 }
             }
+
+            $servico->possuiServicoAFazer = $possuiServicoAFazer;
         }   
 
         $_SESSION["servicos"] = $servicos;
@@ -37,38 +42,95 @@ switch ($opcao) {
         break;
     case 2: //insert
         session_start();
-        $servico = new Servico(
-            $_REQUEST["nome"],
-            $_REQUEST["valor"],
-            $_REQUEST["cidade"],
-            $_REQUEST["descricao"],
-            $_REQUEST["tipo"],
-            $_SESSION["usuario"]->id
-        );
-
-        $idServico = $servicoDAO->insert(
-           $servico
-        );
-
-        foreach($_REQUEST["datas"] as $data) {
-            $data = new DataDisponivel($idServico, strtotime($data), true);
-            $datasDAO->insert($data);
+        try{
+            $servico = new Servico(
+                $_REQUEST["nome"],
+                $_REQUEST["valor"],
+                $_REQUEST["cidade"],
+                trim($_REQUEST["descricao"]),
+                $_REQUEST["tipo"],
+                $_SESSION["usuario"]->id
+            );
+    
+            $idServico = $servicoDAO->insert(
+               $servico
+            );
+    
+            $datas = [];
+    
+            if(isset($_REQUEST["datas"])) {
+                $datas = $_REQUEST["datas"];
+            }
+    
+            foreach($datas as $data) {
+                $data = new DataDisponivel($idServico, strtotime($data), true);
+                $datasDAO->insert($data);
+            }
+    
+            header("Location: controllerServico.php?opcao=1");
+        }catch(Exception $e){
+            $_SESSION["erro"] = "Erro ao inserir serviço";
+            header("Location: controllerTipo.php?opcao=2");
         }
-
-        header("Location: controllerServico.php?opcao=1");
         break;
-    case 3: //atualizar
+    case 3: //get by id
         session_start();
-        $servico = $servicoDAO->getById($_REQUEST["id"]);
-        $servico->tipo = $tipoDAO->getById($servico->idTipo);
-        $datasDisponiveis = $datasDAO->findByIdServico($servico->id);
-        $servico->datasDisponiveis = $datasDisponiveis ?? [];
-
+        $servico = getServicoById($_REQUEST["id"]);
         $_SESSION["servico"] = $servico;
 
         header("Location: controllerTipo.php?opcao=2");
+        break;
+    case 4: //atualizar
+        session_start();
+
+        try{
+            $servico = new Servico(
+                $_REQUEST["nome"],
+                $_REQUEST["valor"],
+                $_REQUEST["cidade"],
+                trim($_REQUEST["descricao"]),
+                $_REQUEST["tipo"],
+                $_REQUEST["idPrestador"]
+            );
+            $servico->id = $_REQUEST["id"];
+    
+            $servicoDAO->update($servico);
+    
+            $datas = [];
+    
+            if(isset($_REQUEST["datas"])) {
+                $datas = $_REQUEST["datas"];
+            }
+    
+            $datasDAO->update($datas, $servico->id);
+    
+            $servico = getServicoById($servico->id);
+            $_SESSION["servico"] = $servico;
+            $_SESSION["sucesso"] = "Serviço atualizado com sucesso";
+            header("Location: controllerTipo.php?opcao=2");
+        }catch(Exception $e){
+            $_SESSION["erro"] = "Erro ao atualizar serviço";
+            header("Location: controllerTipo.php?opcao=2");
+        }
+        break;
+    case 5: //delete
+        session_start();
+        $servicoDAO->delete($_REQUEST["id"]);
+
+        header("Location: controllerServico.php?opcao=1");
+    break;
     default:
         # code...
         break;
+}
+
+function getServicoById(int $id) : Servico {
+    global $servicoDAO, $tipoDAO, $datasDAO;
+
+    $servico = $servicoDAO->getById($id);
+    $servico->tipo = $tipoDAO->getById($servico->idTipo);
+    $servico->datasDisponiveis = $datasDAO->findByIdServico($servico->id) ?? [];
+
+    return $servico;
 }
 ?>

@@ -35,15 +35,17 @@
                     <hr>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInputTel" oninput="validarTelefone(this)" placeholder="XXXXXXXXXXX" name="telefone" required>
+                        <input type="text" class="form-control" id="floatingInputTel" oninput="validarTelefone(this)"
+                        placeholder="XX XXXXX-XXXX" name="telefone" required>
                         <label for="floatingInputTel">Telefone</label>
                     </div>
 
                     <hr>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInputCPF" oninput="validarCPF(this)" placeholder="XXXXXXXXXXX" name="cpf" required>
-                        <label for="floatingInputCPF">CPF</label>
+                        <input type="text" class="form-control" id="floatingInputCPF" oninput="validarCPF_CNPJ(this)"
+                        placeholder="XXX.XXX.XXX-XX" name="cpf_cnpj" required>
+                        <label for="floatingInputCPF">CPF ou CNPJ</label>
                     </div>
 
                     <hr>
@@ -88,26 +90,8 @@
                         <button class="btn btn-lg btn-primary btn-login fw-bold text-uppercase" type="submit">Efetuar Cadastro</button>
                     </div>
 
-                    <?php
-                    if(isset($_REQUEST["erro"])){
-                        $msg = "";
-                        $alert = "";
-                        switch ($_REQUEST["erro"]) {
-                            case 0:
-                                $msg = "usuário cadastrado com sucesso";
-                                $alert = "alert-success";
-                            break;
-                            case 1:
-                                $msg = "Erro ao cadastra usuário";
-                                $alert = "alert-danger";
-                            break;
-                        }
-
-                        echo 
-                            '<div class="alert '. $alert .'" role="alert">'
-                                . $msg .
-                            '</div>';
-                    }
+                     <?php
+                        require_once "includes/mensagens.inc.php";
                     ?>
 
                     <a class="d-block text-center mt-2 small" href="formUsuarioLogin.php">Possui uma conta? Entre aqui</a>

@@ -5,6 +5,11 @@ $opcao = (int)$_REQUEST["opcao"];
 
 switch ($opcao) {
     case 1: //Login
+        session_start();
+
+        $_SESSION["erros"] = [];
+        $_SESSION["sucessos"] = [];
+
         try {
             $usuarioDao = new UsuarioDao();
             //recupero as informações do login
@@ -13,18 +18,19 @@ switch ($opcao) {
 
             //passa o email e senha para ser autenticado pelo usuarioDao
             $usuario = $usuarioDao->autenticar($email, $senha);
+            
 
-            //verifica as credenciais correponde a algum usuario
             if ($usuario != null) {
-                session_start();
                 $_SESSION["usuario"] = $usuario;
 
                 header("Location: ../views/exibirServicos.php");
             } else {
-                header("Location: ../views/formUsuarioLogin.php?erro=1"); //usuário não encontrado
+                $_SESSION["erros"][] = "Usuário não encontrado";
+                header("Location: ../views/formUsuarioLogin.php? ");
             }
         } catch (Exception $e) {
-            header("Location: ../views/formUsuarioLogin.php?erro=2"); //ocorreu algum problema ao fazer o login
+            $_SESSION["erros"][] = "Ocorreu um erro ao fazer o login";
+            header("Location: ../views/formUsuarioLogin.php");
         }
         break;
     case 2: //Logout
@@ -33,6 +39,7 @@ switch ($opcao) {
         header("Location: ../views/index.php");
         break;
     case 3: //insert
+        session_start();
         try {
             $usuarioDao = new UsuarioDao();
             $tipo = 'C';
@@ -45,7 +52,7 @@ switch ($opcao) {
                 $_REQUEST["nome"],
                 $_REQUEST["endereco"],
                 $_REQUEST["telefone"],
-                $_REQUEST["cpf"],
+                $_REQUEST["cpf_cnpj"],
                 strtotime($_REQUEST["dt_nascimento"]),
                 $_REQUEST["email"],
                 $_REQUEST["senha"],
@@ -54,16 +61,20 @@ switch ($opcao) {
 
             $usuarioDao->insert($usuario);
 
-            header("Location: ../views/formUsuarioLogin.php?erro=0"); //sucesso
+            $_SESSION["sucessos"][] = "Usuário cadastrado com sucesso";
+
+            header("Location: ../views/formUsuarioLogin.php");
         } catch (Exception $e) {
-            header("Location: ../views/formUsuario.php?erro=1"); //erro ao cadastra usuário
+            $_SESSION["erros"][] = "Erro ao cadastrar usuário";
+            header("Location: ../views/formUsuario.php");
         }
         break;
 
     case 4: //get by id
+        session_start();
         try {
             $usuarioDao = new UsuarioDao();
-            session_start();
+            
             $_SESSION["usuario"] = $usuarioDao->getById($_SESSION["usuario"]->id);
 
             header("Location: ../views/formUsuarioAtualizar.php");
@@ -72,9 +83,9 @@ switch ($opcao) {
         }
         break;
     case 5: //update
+        session_start();
         try {
             $usuarioDao = new UsuarioDao();
-            session_start();
             $tipo = 'C';
 
             if (isset($_REQUEST["tipo"])) {
@@ -85,7 +96,7 @@ switch ($opcao) {
                 $_REQUEST["nome"],
                 $_REQUEST["endereco"],
                 $_REQUEST["telefone"],
-                $_REQUEST["cpf"],
+                $_REQUEST["cpf_cnpj"],
                 strtotime($_REQUEST["dt_nascimento"]),
                 $_REQUEST["email"],
                 "",
@@ -97,37 +108,44 @@ switch ($opcao) {
 
             $_SESSION["usuario"] = $usuarioDao->autenticar($_REQUEST["email"],  $_SESSION["usuario"]->senha);
 
-            header("Location: ../views/formUsuarioAtualizar.php?erro=0"); //sucesso
+            $_SESSION["sucessos"][] = "Usuário atualizado com sucesso";
+            header("Location: ../views/formUsuarioAtualizar.php");
         } catch (Exception $e) {
-            header("Location: ../views/formUsuarioAtualizar.php?erro=1"); //falha ao atualizar usuário
+            $_SESSION["erros"][] = "Erro ao atualizar usuário";
+            header("Location: ../views/formUsuarioAtualizar.php");
         }
         break;
     case 6: //update senha
+        session_start();
         try {
             $usuarioDao = new UsuarioDao();
             $senha = $_REQUEST["senha"];
-            session_start();
+            
             $id = $_SESSION["usuario"]->id;
 
             $usuarioDao->updateSenha($id, $senha);
 
             $_SESSION["usuario"] = $usuarioDao->autenticar($_SESSION["usuario"]->email,  $senha);
-            header("Location: ../views/formUsuarioAtualizarSenha.php?erro=0"); //sucesso
+            $_SESSION["sucessos"][] = "Senha atualizada com sucesso";
+            header("Location: ../views/formUsuarioAtualizarSenha.php");
         } catch (Exception $e) {
-            header("Location: ../views/formUsuarioAtualizarSenha.php?erro=1"); //falha ao atualizar a senha
+            $_SESSION["erros"][] = "Erro ao atualizar a senha";
+            header("Location: ../views/formUsuarioAtualizarSenha.php?erro=1");
         }
         break;
     case 7: //deleção
+        session_start();
         try{
-            session_start();
             $usuarioDao = new UsuarioDao();
             $usuario = $_SESSION["usuario"];
 
             $usuarioDao->delete($usuario);
 
-            header("Location: controllerUsuario.php?opcao=2"); //logout
+            $_SESSION["sucessos"][] = "Usuário excluído com sucesso";
+            header("Location: controllerUsuario.php?opcao=2");
         }catch(Exception $e){
-            header("Location: ../views/formUsuarioAtualizar.php?erro=2"); //falha ao excluir usuário
+            $_SESSION["erros"][] = "Erro ao excluir usuário";
+            header("Location: ../views/formUsuarioAtualizar.php");
         }
         break;
 }

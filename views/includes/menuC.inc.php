@@ -1,5 +1,5 @@
 <?php
-  // Menu cliente
+  // Menu do cliente
   $usuario = $_SESSION["usuario"];
 ?>
 
@@ -10,16 +10,9 @@
   </a>
 
   <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+    <li><a href="index.php" class="nav-link px-2 link-secondary">Home</a></li>
 
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle link-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Serviços
-      </a>
-      <ul class="dropdown-menu">
-        <?= $usuario->tipo == "U" ? "<li><a class=\"dropdown-item\" href=\"../controllers/controllerTipo.php?opcao=1\">Cadastrar</a></li>" : "" ?>
-        <li><a class="dropdown-item" href="exibirServicos.php">Consultar</a></li>
-      </ul>
-    </li>
+    <li><a class="nav-link px-2 link-secondar" href="exibirServicos.php">Serviços</a></li>
 
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle link-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -28,15 +21,6 @@
       <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="../controllers/controllerUsuario.php?opcao=4">Visualizar cadastro</a></li>
         <li><a class="dropdown-item" href="../views/formUsuarioAtualizarSenha.php">Alterar senha</a></li>
-      </ul>
-    </li>
-
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle link-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        Vendas
-      </a>
-      <ul class="dropdown-menu">
-        <li><a class="dropdown-item" href="#">Vendas realizadas</a></li>
       </ul>
     </li>
 

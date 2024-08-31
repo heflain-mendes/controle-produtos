@@ -9,7 +9,7 @@ final class Usuario
         private string $nome,
         private string $endereco,
         private string $telefone,
-        private string $cpf,
+        private string $cpf_cnpj,
         private int $dtNascimento,
         private string $email,
         private string $senha,

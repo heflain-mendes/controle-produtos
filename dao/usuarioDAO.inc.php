@@ -41,7 +41,7 @@ class UsuarioDAO{
             "nome" => $usuario->nome,
             "endereco" => $usuario->endereco,
             "telefone" => $usuario->telefone,
-            "cpf" => $usuario->cpf,
+            "cpf_cnpj" => $usuario->cpf_cnpj,
             "dt_nascimento" => $data,
             "email" => $usuario->email,
             "senha" => $usuario->senha,
@@ -55,7 +55,7 @@ class UsuarioDAO{
             "nome" => $usuario->nome,
             "endereco" => $usuario->endereco,
             "telefone" => $usuario->telefone,
-            "cpf" => $usuario->cpf,
+            "cpf_cnpj" => $usuario->cpf_cnpj,
             "dt_nascimento" => $data,
             "email" => $usuario->email,
             "tipo" => $usuario->tipo
@@ -78,9 +78,9 @@ class UsuarioDAO{
         $this->decorator->update(["id" => $usuario->id], 
         ["esta_deletado" => 1, 
         "email" => null, 
-        "cpf" => null,
+        "cpf_cnpj" => null,
         "email_deletado" => $usuario->email,
-        "cpf_deletado" => $usuario->cpf
+        "cpf_cnpj_deletado" => $usuario->cpf_cnpj
     ]);
     }
 
@@ -91,7 +91,7 @@ class UsuarioDAO{
             $data["nome"], 
             $data["endereco"], 
             $data["telefone"], 
-            $data["cpf"], 
+            $data["cpf_cnpj"], 
             strtotime($data["dt_nascimento"]), 
             $data["email"], 
             $data["senha"],

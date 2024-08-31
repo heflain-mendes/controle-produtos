@@ -44,8 +44,8 @@ $usuario = $_SESSION["usuario"];
                     <hr>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInputTel"
-                            oninput="validarTelefone(this)" placeholder="XXXXXXXXXXX" name="telefone"
+                        <input type="text" class="form-control" id="floatingInputTel" oninput="validarTelefone(this)"
+                        placeholder="XX XXXXX-XXXX" name="telefone"
                             value="<?= $usuario->telefone ?>">
                         <label for="floatingInputTel">Telefone</label>
                     </div>
@@ -53,10 +53,9 @@ $usuario = $_SESSION["usuario"];
                     <hr>
 
                     <div class="form-floating mb-3">
-                        <input type="text" class="form-control" id="floatingInputCPF"
-                            oninput="validarCPF(this)" placeholder="XXXXXXXXXXX" name="cpf"
-                            value="<?= $usuario->cpf ?>">
-                        <label for="floatingInputCPF">CPF</label>
+                        <input type="text" class="form-control" id="floatingInputCPF" oninput="validarCPF_CNPJ(this)"
+                        value="<?= $usuario->cpf_cnpj?>" placeholder="XXX.XXX.XXX-XX" name="cpf_cnpj" required>
+                        <label for="floatingInputCPF">CPF ou CNPJ</label>
                     </div>
 
                     <hr>
@@ -87,37 +86,16 @@ $usuario = $_SESSION["usuario"];
                     if (!$usuario->possuiServicosFuturosAPrestar || !$usuario->possuiServicosFuturosContratados) {
                         echo "<div class=\"d-grid mb-2\">
                         <a href=\"../controllers/controllerUsuario.php?opcao=7\" class=\"btn btn-lg btn-danger btn-login fw-bold text-uppercase\" >Remover conta</a>
-                        </div";
-                    }
-                    ?>
-
-
-                    <?php
-                    if (isset($_REQUEST["erro"])) {
-                        $msg = "";
-                        $alert = "alert-danger";
-                        switch ($_REQUEST["erro"]) {
-                            case 0:
-                                $msg = "usuário atualizado com sucesso";
-                                $alert = "alert-success";
-                                break;
-                            case 1:
-                                $msg = "Erro ao atualizar usuário";
-                                break;
-                            case 2:
-                                $msg = "Erro ao excluir usuário";
-                                break;
-                        }
-
-                        echo
-                        '<div class="alert ' . $alert . '" role="alert">'
-                            . $msg .
-                            '</div>';
+                        </div>";
                     }
                     ?>
 
                     <input type="hidden" value="5" name="opcao">
                     <input type="hidden" value="<?= $usuario->id ?>" name="id">
+
+                    <?php
+                    require_once "includes/mensagens.inc.php";
+                    ?>
                 </form>
             </div>
         </div>

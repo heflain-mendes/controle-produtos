@@ -27,31 +27,35 @@ final class ServicoDAO
     }
 
     public function getById($id) : Servico{
-       $servico = $this->decorator->find(["id" => $id])[0];
+       $servico = $this->decorator->find(["id" => $id, "esta_deletado" => false])[0];
        return ServicoDAO::assocToServico($servico);
     }
 
     public function getByIdUsuario($idUsuario) : array {
-        $servicosAssoc = $this->decorator->find(["id_prestador" => $idUsuario]);
+        $servicosAssoc = $this->decorator->find(["id_prestador" => $idUsuario, "esta_deletado" => false]);
         $servicosObj = ServicoDAO::assocsToServicos($servicosAssoc);
 
-        return $servicosObj;
-    }
-
-    public function deleteById(int $id) {
-        $this->decorator->delete(["id" => $id]);
+        return $servicosObj ?? [];
     }
 
     public function update(Servico $servico) {
         $this->decorator->update([
+            "id" => $servico->id
+        ],[
             "nome" => $servico->nome,
             "valor" => $servico->valor,
             "cidade" => $servico->cidade,
             "descricao" => $servico->descricao,
-            "id_tipo" => $servico->idTtipo
-        ],[
-            "id_servico" => $servico->idServico
+            "id_tipo" => $servico->idTipo
         ]);
+    }
+
+    public function delete(int $id) {
+        $this->decorator->update([
+            "id" => $id
+        ],[
+            "esta_deletado" => 1
+        ],);
     }
 
     private static function assocToServico($data) : Servico | null {

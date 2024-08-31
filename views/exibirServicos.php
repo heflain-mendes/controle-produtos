@@ -34,13 +34,20 @@ $servicos = $_SESSION['servicos'];
                 echo "<td>" . $servico->tipo->nome . "</td>";
                 echo "<td><a href='../controllers/controllerServico.php?opcao=3&id=". $servico->id ."' class='btn btn-success btn-sm'>V</a> ";
                 if(!$servico->possuiServicoAFazer){
-                    echo "<a href='#' class='btn btn-danger btn-sm'>X</a></td>";
+                    echo "<a href='../controllers/controllerServico.php?opcao=5&id=". $servico->id ."' class='btn btn-danger btn-sm'>X</a></td>";
                 }
                 echo "</tr>";
             }
             ?>
         </tbody>
     </table>
+
+    <?php
+    if ($contadora == 0) {
+        require_once 'includes/servicosVazios.inc.php';
+    }
+    ?>
+
 </div>
 
 <?php

@@ -7,7 +7,7 @@ final class Servico
     private int $id;
     private Tipo $tipo;
     private array $datasDisponiveis;
-    private bool $possuiServicoAFazer = false;
+    private bool $possuiServicoAFazer;
 
     
     public function __construct(

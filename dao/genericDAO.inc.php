@@ -61,9 +61,9 @@ final class GenericDAO
         return $this->conn->lastInsertId();
     }
 
-    public function update(array $data, array $fieldsValues) {
-        $setClause = $this->getClause($fieldsValues, ", ");
-        $whereClause = $this->getClause($data, " AND ");
+    public function update(array $wheres, array $sets) {
+        $setClause = $this->getClause($sets, ", ");
+        $whereClause = $this->getClause($wheres, " AND ");
     
         $sql = $this->conn->prepare(
             "UPDATE $this->tableName 
@@ -71,11 +71,11 @@ final class GenericDAO
             " WHERE " . $whereClause
         );
     
-        foreach ($fieldsValues as $key => $value) {
+        foreach ($sets as $key => $value) {
             $sql->bindValue(":" . $key, $value);
         }
 
-        foreach ($data as $key => $value) {
+        foreach ($wheres as $key => $value) {
             $sql->bindValue(":" . $key, $value);
         }
     

@@ -5,7 +5,7 @@ final class DataDisponivel {
     public function __construct(
         private int $idServico,
         private int $data,
-        private bool $disponivel,
+        private bool $disponivel = true,
     ) { }
 
     public function __set($name, $value){

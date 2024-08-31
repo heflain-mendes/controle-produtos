@@ -12,33 +12,6 @@ function validarSenha() {
     }
 }
 
-function validarCPF(inputField) {
-    inputField.value = inputField.value.replace(/[^0-9]/g, '');
-
-    if (inputField.value.length < 11) {
-        inputField.setCustomValidity("O CPF deve ter exatamente 11 dígitos.");
-    } else if (inputField.value.length > 11) {
-        inputField.setCustomValidity("O CPF deve ter exatamente 11 dígitos.");
-    } else {
-        inputField.setCustomValidity(""); // Limpa a mensagem de erro
-    }
-}
-
-function validarTelefone(inputField) {
-     inputField.value = inputField.value.replace(/[^0-9]/g, '');
-
-     const minLength = 10; 
-     const maxLength = 11; 
-
-     if (inputField.value.length < minLength) {
-         inputField.setCustomValidity(`O número de telefone deve ter pelo menos ${minLength} dígitos.`);
-     } else if (inputField.value.length > maxLength) {
-         inputField.setCustomValidity(`O número de telefone deve ter no máximo ${maxLength} dígitos.`);
-     } else {
-         inputField.setCustomValidity("");
-     }
-}
-
 function validarDataNascimento(){
     const formDtNasc = document.querySelector("#floatingInputDtNasc");
     const dataNasc = new Date(formDtNasc.value);
@@ -62,3 +35,20 @@ function validarDataNascimento(){
     }
 }
 
+function validarTelefone(input) {
+    const telefonePattern = /^\d{2} \d{5}-\d{4}$/;
+    if (!telefonePattern.test(input.value)) {
+        input.setCustomValidity("Formato de telefone inválido, formato correto: 00 00000-0000");
+    } else {
+        input.setCustomValidity("");
+    }
+}
+
+function validarCPF_CNPJ(input) {
+    const cpfPattern = /(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)|(^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$)/;
+    if (!cpfPattern.test(input.value)) {
+        input.setCustomValidity("Formato de CPF inválido, formato correto: 000.000.000-00 ou CNPJ 00.000.000/0000-00");
+    } else {
+        input.setCustomValidity("");
+    }
+}
