@@ -8,6 +8,7 @@ final class Servico
     private Tipo $tipo;
     private array $datasDisponiveis;
     private bool $possuiServicoAFazer;
+    private string $nomePrestador;
 
     
     public function __construct(

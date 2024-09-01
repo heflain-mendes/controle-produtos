@@ -24,7 +24,7 @@ CREATE TABLE `servicos` (
   FOREIGN KEY (id_prestador) REFERENCES usuarios(id),
   `nome` varchar(50) NOT NULL,
   `valor` float NOT NULL,
-  `descricao` text NOT NULL,
+  `descricao` varchar(50) NOT NULL,
   `cidade` varchar(50) NOT NULL,
   `id_tipo` int(11) NOT NULL,
   FOREIGN KEY (id_tipo) REFERENCES tipos(id),

@@ -1,5 +1,6 @@
 <?php
 require_once "../classes/model/usuario.php";
+require_once "../dao/usuarioDAO.inc.php";
 require_once "../dao/servicoDAO.inc.php";
 require_once "../dao/dataDisponivelDAO.inc.php";
 require_once "../dao/tipoDAO.inc.php";
@@ -13,9 +14,10 @@ if(isset($_REQUEST["opcao"]) && is_numeric($_REQUEST["opcao"])){
 $servicoDAO = new ServicoDAO();
 $datasDAO = new DataDisponivelDAO();
 $tipoDAO = new TipoDAO();
+$usuarioDAO = new UsuarioDAO();
 
 switch ($opcao) {
-    case 1: //get all
+    case 1: //get all by usuario
         session_start();
         $idUsuario = $_SESSION["usuario"]->id;
         $servicos = $servicoDAO->getByIdUsuario($idUsuario);
@@ -69,7 +71,7 @@ switch ($opcao) {
     
             header("Location: controllerServico.php?opcao=1");
         }catch(Exception $e){
-            $_SESSION["erro"] = "Erro ao inserir serviço";
+            $_SESSION["erros"][] = "Erro ao inserir serviço";
             header("Location: controllerTipo.php?opcao=2");
         }
         break;
@@ -106,10 +108,10 @@ switch ($opcao) {
     
             $servico = getServicoById($servico->id);
             $_SESSION["servico"] = $servico;
-            $_SESSION["sucesso"] = "Serviço atualizado com sucesso";
+            $_SESSION["sucessos"][] = "Serviço atualizado com sucesso";
             header("Location: controllerTipo.php?opcao=2");
         }catch(Exception $e){
-            $_SESSION["erro"] = "Erro ao atualizar serviço";
+            $_SESSION["erros"][] = "Erro ao atualizar serviço";
             header("Location: controllerTipo.php?opcao=2");
         }
         break;
@@ -119,6 +121,20 @@ switch ($opcao) {
 
         header("Location: controllerServico.php?opcao=1");
     break;
+    case 6: //get all
+        session_start();
+        $servicos = $servicoDAO->getAll();
+        
+        foreach($servicos as $servico) {
+            $servico->tipo = $tipoDAO->getById($servico->idTipo);
+            $servico->datasDisponiveis = $datasDAO->findByIdServicoParaVenda($servico->id);
+            $servico->nomePrestador = $usuarioDAO->getNameById($servico->idPrestador);
+        }   
+
+        $_SESSION["servicos"] = $servicos;
+
+        header("Location: ../views/servicosVenda.php");
+        break;
     default:
         # code...
         break;

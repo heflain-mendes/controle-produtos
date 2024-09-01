@@ -14,17 +14,17 @@ $servico = $_SESSION["servico"];
 <form class="row g-3" action="../controllers/controllerServico.php" method="post">
   <div class="col-md-6">
     <label for="nome" class="form-label">Nome: </label>
-    <input type="text" class="form-control" name="nome"
+    <input type="text" class="form-control" name="nome" required
       minlength="10" maxlength="50" value="<?=$servico->nome?>">
   </div>
   <div class="col-md-3">
     <label for="valor" class="form-label">Valor: </label>
-    <input type="number" class="form-control" name="valor" value="<?=$servico->valor?>" lang="pt-BR" step="0.01">
+    <input type="number" class="form-control" name="valor" required value="<?=$servico->valor?>" lang="pt-BR" step="0.01">
   </div>
   <div class="col-md-3">
     <label for="tipo" class="form-label">Tipo: </label>
-    <select name="tipo" class="form-select">
-      <option disabled value="0">Escolha...</option>
+    <select name="tipo" class="form-select" required>
+      <option disabled value="">Escolha...</option>
       <?php
       foreach ($tipos as $t) {
         echo "<option " . ($t->id == $servico->idTipo ? "selected" : "") . " value=$t->id>$t->nome</option>";
@@ -33,18 +33,18 @@ $servico = $_SESSION["servico"];
     </select>
   </div>
 
-  <div class="col-12">
-    <label for="descricao" class="form-label">Descrição do serviço: </label>
-    <textarea class="form-control" name="descricao" minlength="10" rows="5" style="resize: none"><?=$servico->descricao?></textarea>
-  </div>
-
-  <div class="col-md-6">
+  <div class="col-md-4">
     <label for="cidade" class="form-label">Cidade: </label>
-    <input type="text" class="form-control" value="<?= $servico->cidade ?>"
-      minlength="3" maxlength="50" name="cidade" id="cidade">
+    <input type="text" class="form-control" minlength="3" maxlength="50" 
+    name="cidade" id="cidade" required value="<?=$servico->cidade?>">
   </div>
 
-  <div class="col-md-1 col-0"></div>
+  <div class="col-md-8">
+    <label for="descricao" class="form-label">Descrição do serviço: </label>
+    <input type="text" class="form-control" minlength="10" maxlength="50" 
+    required name="descricao" id="descricao" value="<?=$servico->descricao?>">
+  </div>
+
   <div class="col-md-8 col-lg-6" id="datas">
     <div class="d-flex">
       <label for="dates" class="form-label me-auto">Datas: </label>
@@ -59,7 +59,7 @@ $servico = $_SESSION["servico"];
       <div class="d-flex" id="data<?=$contador?>">
 
         <input type="date" name="datas[]" oninput="validarData()"
-          class="form-control mb-2 data_input" <?=$d->disponivel ? "": "disabled"?> value="<?=parseISO($d->data)?>">
+          class="form-control mb-2 data_input" <?=$d->disponivel ? "required": "disabled"?> value="<?=parseISO($d->data)?>">
 
         <?php
         if ($d->disponivel) {
@@ -98,7 +98,7 @@ $servico = $_SESSION["servico"];
   </div>
 
   <?php
-  require_once "includes/mensagens.inc.php";
+    require_once "includes/mensagens.inc.php";
   ?>
 </form>
 

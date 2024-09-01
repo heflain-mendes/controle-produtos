@@ -30,7 +30,26 @@ final class DataDisponivelDAO
 
         $rObj = DataDisponivelDAO::assocsToDatasDisponiveis($r);
 
-        return $rObj;
+        return $rObj ?? [];
+    }
+
+    public function findByIdServicoParaVenda(int $idServico) : array | null {
+        $sql = $this->conn->prepare(
+            "
+                SELECT * 
+                FROM $this->nomeDatabase
+                WHERE id_servico = :id_servico AND disponivel = 1 AND data > CURRENT_DATE
+            "
+        );
+
+        $sql->bindValue(":id_servico", $idServico);
+        $sql->execute();
+
+        $r = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        $rObj = DataDisponivelDAO::assocsToDatasDisponiveis($r);
+
+        return $rObj ?? []; 
     }
 
     public function update(array $datasDisponiveis, int $idServico) {

@@ -74,6 +74,11 @@ class UsuarioDAO{
         return $usuario;
     }
 
+    public function getNameById(int $id) : string {
+        $usuario = $this->getById($id);
+        return $usuario->nome;
+    }
+
     public function delete(Usuario $usuario) {
         $this->decorator->update(["id" => $usuario->id], 
         ["esta_deletado" => 1, 
