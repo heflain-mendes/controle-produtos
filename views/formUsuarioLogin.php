@@ -11,7 +11,7 @@
             </div>
             <div class="card-body p-4 p-sm-5">
                 <h5 class="card-title text-center mb-5 fw-light fs-5">Entre com suas informações de Login</h5>
-                <form onsubmit="return validarSubmit()" action="../controllers/controllerUsuario.php" method="get">
+                <form action="../controllers/controllerUsuario.php" method="get">
 
                     <div class="form-floating mb-3">
                         <input type="email" class="form-control" id="floatingInputEmail" minlength="8" maxlength="50"

@@ -23,7 +23,7 @@ switch ($opcao) {
             if ($usuario != null) {
                 $_SESSION["usuario"] = $usuario;
 
-                header("Location: ../views/exibirServicos.php");
+                header("Location: controllerServico.php?opcao=6");
             } else {
                 $_SESSION["erros"][] = "Usuário não encontrado";
                 header("Location: ../views/formUsuarioLogin.php? ");
