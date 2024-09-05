@@ -31,18 +31,19 @@ CREATE TABLE `servicos` (
   `esta_deletado` tinyint(1) NOT NULL DEFAULT 0
 );
 
+CREATE TABLE `vendas` (
+  `id` int(11) AUTO_INCREMENT PRIMARY KEY,
+  `id_contratante` int(11) NOT NULL,
+  FOREIGN KEY (id_contratante) REFERENCES usuarios(id)
+);
+
 CREATE TABLE `datas_disponiveis` (
   `id` int AUTO_INCREMENT PRIMARY KEY,
   `id_servico` int,
   FOREIGN KEY (id_servico) REFERENCES servicos(id),
+  `id_venda` int,
+  FOREIGN KEY (id_venda) REFERENCES vendas(id),
   `data` date NOT NULL,
   `disponivel` tinyint(1) NOT NULL DEFAULT 1
 );
 
-CREATE TABLE `vendas` (
-  `id` int(11) AUTO_INCREMENT PRIMARY KEY,
-  `id_contratante` int(11) NOT NULL,
-  FOREIGN KEY (id_contratante) REFERENCES usuarios(id),
-  `id_datas_disponiveis` int(11) NOT NULL,
-  FOREIGN KEY (id_datas_disponiveis) REFERENCES datas_disponiveis(id)
-);

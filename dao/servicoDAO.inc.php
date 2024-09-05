@@ -87,8 +87,6 @@ final class ServicoDAO
         $servicosAssoc = $sql->fetchAll(PDO::FETCH_ASSOC);
         $servicosObj = ServicoDAO::assocsToServicos($servicosAssoc);
 
-
-
         return $servicosObj;
     }
 
@@ -122,3 +120,5 @@ final class ServicoDAO
         return $r ?? [];
     }
 }
+
+?>

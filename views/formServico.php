@@ -16,7 +16,7 @@ $tipos = $_SESSION["tipos"];
   </div>
   <div class="col-md-3">
     <label for="valor" class="form-label">Valor: </label>
-    <input type="number" class="form-control" name="valor" lang="pt-BR" step="0.01" required>
+    <input type="number" class="form-control" name="valor" lang="pt-BR" step="0.01" min="0.01" required>
   </div>
   <div class="col-md-3">
     <label for="tipo" class="form-label">Tipo: </label>
@@ -48,10 +48,6 @@ $tipos = $_SESSION["tipos"];
     <div class="d-flex" id="data0">
       <input type="date" name="datas[]" oninput="validarData()" class="form-control mb-2 data_input" required>
       <button type="button" onclick="removeDate(0)" class="mb-2 btn btn-outline-danger mx-1" style="min-width: 100px;">Remover</button>
-    </div>
-
-    <div id="erroDataMinima" class="alert alert-danger" role="alert" style="display: none;">
-      A data miníma deve ser <?= formatarData(strtotime('tomorrow')) ?>
     </div>
   </div>
 

@@ -19,7 +19,7 @@
       <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="../controllers/controllerServico.php?opcao=1">Visualizar</a></li>
         <li><a class="dropdown-item" href="../controllers/controllerTipo.php?opcao=1">Cadastrar</a></li>
-        <li><a class="dropdown-item" href="exibirServicos.php">Consultar</a></li>
+        <li><a class="dropdown-item" href="../controllers/controllerServico.php?opcao=6">Consultar</a></li>
       </ul>
     </li>
 
@@ -34,7 +34,7 @@
     </li>
 
     <li>
-      <a class="nav-link px-2 link-dark" href="#">
+      <a class="nav-link px-2 link-dark" href="exibirCarrinho.php">
         <img src="imagens/cart3.png" alt="">
       </a>
     </li>

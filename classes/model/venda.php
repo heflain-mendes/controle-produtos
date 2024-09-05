@@ -10,7 +10,7 @@ final class Venda
         private int $qtdItens
     ) {}
 
-    public function __get ($name){
+    public function __get ($name){ 
         return $this->$name;
     }
 

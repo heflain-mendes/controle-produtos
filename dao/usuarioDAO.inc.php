@@ -69,7 +69,8 @@ class UsuarioDAO{
     public function getById(int $id) : Usuario {
         $usuario = UsuarioDAO::assocToUsuario($this->decorator->find(["id" => $id, "esta_deletado" => 0])[0]);
         $usuario->possuiServicosFuturosAPrestar = $this->possuiServicosFuturosAPrestar($usuario->id);
-        $usuario->possuiServicosFuturosContratados = $this->possuiServicosFuturosContratados($usuario->id);
+        $usuario->possuiServicosFuturosContratados = false;
+        $this->possuiServicosFuturosContratados($usuario->id);
 
         return $usuario;
     }
@@ -134,9 +135,9 @@ class UsuarioDAO{
         $sql = $this->conn->prepare(
             "SELECT EXISTS(
                 SELECT *
-                FROM datas_disponiveis as dd
-                JOIN vendas as v
-                ON v.id_datas_disponiveis = dd.id
+                FROM vendas as v
+                INNER JOIN datas_disponiveis as dd
+                ON dd.id_venda = v.id
                 WHERE v.id_contratante = :id_usuario
                     AND dd.data > CURRENT_DATE
                     AND dd.disponivel = 0

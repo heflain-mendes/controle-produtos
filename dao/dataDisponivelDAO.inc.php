@@ -63,7 +63,13 @@ final class DataDisponivelDAO
     private static function assocToDataDisponivel($data) : DataDisponivel | null{
         if(!isset($data)) return null;
 
-        $d = new DataDisponivel($data["id_servico"], strtotime($data["data"]), $data["disponivel"]);
+        $d = new DataDisponivel(
+            $data["id_servico"], 
+            strtotime($data["data"]), 
+            $data["disponivel"], 
+            $data["id_venda"] ?? 0
+        );
+        
         $d->id = $data["id"];
         
         return $d;

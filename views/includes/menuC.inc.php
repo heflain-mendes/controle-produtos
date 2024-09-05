@@ -12,7 +12,7 @@
   <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
     <li><a href="index.php" class="nav-link px-2 link-secondary">Home</a></li>
 
-    <li><a class="nav-link px-2 link-secondar" href="exibirServicos.php">Serviços</a></li>
+    <li><a class="nav-link px-2 link-secondar" href="../controllers/controllerServico.php?opcao=6">Serviços</a></li>
 
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle link-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -25,7 +25,7 @@
     </li>
 
     <li>
-      <a class="nav-link px-2 link-dark" href="#">
+      <a class="nav-link px-2 link-dark" href="exibirCarrinho.php">
         <img src="imagens/cart3.png" alt="">
       </a>
     </li>

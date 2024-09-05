@@ -16,44 +16,51 @@ $tamanhoMaxDescricao = 50;
 
   <?php
   foreach ($servicos as $servico) {
+    if(sizeof($servico->datasDisponiveis) == 0){
+      continue;
+    }
     $c = $tamanhoMaxDescricao - strlen($servico->descricao);
     $c = $c > 0 ? $c : 0;
   ?>
 
     <div class="col">
       <div class="card">
-        <div class="card-body">
-          <h5 class="card-title"><?= $servico->tipo->nome ?></h5>
-          <p class="card-text" style="white-space: pre-wrap;"><?=$servico->descricao . str_repeat('&nbsp;', $c)?></p>
-          <h6 class="card-text">Prestador: <?=$servico->nomePrestador?></h6>
-          <h6 class="card-text text-end"><?= $servico->cidade ?></h6>
-          <h4 class="card-title">R$ <?= number_format($servico->valor, 2, ',', '.') ?></h4>
+        <form action="../controllers/controllerCarrinho.php" method="get">
+          <input type="hidden" name="opcao" value="3">
+          <input type="hidden" name="id_servico" value="<?= $servico->id ?>">
+          <div class="card-body">
+            <h5 class="card-title"><?= $servico->tipo->nome ?></h5>
+            <p class="card-text" style="white-space: pre-wrap;"><?= $servico->descricao . " " . str_repeat('&nbsp;', $c) ?></p>
+            <h6 class="card-text">Prestador: <?= $servico->nomePrestador ?></h6>
+            <h6 class="card-text text-end"><?= $servico->cidade ?></h6>
+            <h4 class="card-title">R$ <?= number_format($servico->valor, 2, ',', '.') ?></h4>
 
-          <!-- Datas para seleção com lista suspensa -->
-          <p class="card-text"><strong>Datas Disponíveis:</strong></p>
-          <div class="dropdown">
-            <button class="btn w-100 btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-              Selecionar Datas
-            </button>
-            <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
-              <?php foreach ($servico->datasDisponiveis as $data) { ?>
-                <li>
-                  <div class="form-check px-3">
-                    <input class="form-check-input" type="checkbox" value="" id="date1">
-                    <label class="form-check-label" for="date1">
-                      <?= formatarData($data->data) ?>
-                    </label>
-                  </div>
-                </li>
-              <?php } ?>
-            </ul>
+            <!-- Datas para seleção com lista suspensa -->
+            <p class="card-text"><strong>Datas Disponíveis:</strong></p>
+            <div class="dropdown">
+              <button class="btn w-100 btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                Selecionar Datas
+              </button>
+              <ul class="dropdown-menu w-100" aria-labelledby="dropdownMenuButton">
+                <?php foreach ($servico->datasDisponiveis as $data) { ?>
+                  <li>
+                    <div class="form-check px-3">
+                      <input class="form-check-input" type="checkbox" name="id_datas[]" value="<?=$data->id?>" id="date1">
+                      <label class="form-check-label" for="date1">
+                        <?= formatarData($data->data) ?>
+                      </label>
+                    </div>
+                  </li>
+                <?php } ?>
+              </ul>
+            </div>
+
+            <!-- Botão de ação -->
+            <div class="text-end mt-3">
+              <button class="btn btn-danger" type="submit">Contratar</button>
+            </div>
           </div>
-              
-        <!-- Botão de ação -->
-        <div class="text-end mt-3">
-          <a href="#" class="btn btn-danger">Comprar</a>
-        </div>
-        </div>
+        </form>
       </div>
     </div>
 

@@ -133,7 +133,7 @@ switch ($opcao) {
 
         $_SESSION["servicos"] = $servicos;
 
-        header("Location: ../views/servicosVenda.php");
+        header("Location: controllerCarrinho.php?opcao=1");
         break;
     default:
         # code...

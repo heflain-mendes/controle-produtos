@@ -27,5 +27,14 @@ final class Servico
     public function __set($name, $value){
         $this->$name = $value;
     }
+
+    public function getData($idData){
+        foreach($this->datasDisponiveis as $data){
+            if($data->id == $idData){
+                return $data;
+            }
+        }
+        return null;
+    }
 }
 ?>

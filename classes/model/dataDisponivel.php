@@ -6,6 +6,7 @@ final class DataDisponivel {
         private int $idServico,
         private int $data,
         private bool $disponivel = true,
+        private int $idVenda = 0
     ) { }
 
     public function __set($name, $value){

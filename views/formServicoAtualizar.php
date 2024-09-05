@@ -19,7 +19,7 @@ $servico = $_SESSION["servico"];
   </div>
   <div class="col-md-3">
     <label for="valor" class="form-label">Valor: </label>
-    <input type="number" class="form-control" name="valor" required value="<?=$servico->valor?>" lang="pt-BR" step="0.01">
+    <input type="number" class="form-control" min="0.01" name="valor" required value="<?=$servico->valor?>" lang="pt-BR" step="0.01">
   </div>
   <div class="col-md-3">
     <label for="tipo" class="form-label">Tipo: </label>
@@ -78,10 +78,6 @@ $servico = $_SESSION["servico"];
       $contador++;
     }
     ?>
-
-    <div id="erroDataMinima" class="alert alert-danger" role="alert" style="display: none;">
-      A data miníma deve ser <?= formatarData(strtotime('tomorrow')) ?>
-    </div>
   </div>
 
   <input type="hidden" name="opcao" value="4">
