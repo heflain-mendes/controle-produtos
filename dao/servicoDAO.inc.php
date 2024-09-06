@@ -90,6 +90,48 @@ final class ServicoDAO
         return $servicosObj;
     }
 
+    public function find($busca): array
+    {
+        $sql = $this->conn->prepare("
+        SELECT 
+            s.id as id,
+            s.id_prestador as id_prestador,
+            s.nome as nome,
+            s.valor as valor,
+            s.cidade as cidade,
+            s.descricao as descricao,
+            s.id_tipo as id_tipo
+        FROM servicos s
+        INNER JOIN datas_disponiveis d 
+        ON s.id = d.id_servico
+        INNER JOIN tipos t
+        ON s.id_tipo = t.id
+        WHERE 
+            s.esta_deletado = 0 AND
+            d.disponivel = 1 AND
+            d.data > CURRENT_DATE AND ".
+            (is_numeric($busca) ? "s.valor = :busca" : "
+            (
+                s.nome LIKE :busca OR
+                s.cidade LIKE :busca OR
+                s.descricao LIKE :busca OR
+                t.nome LIKE :busca
+            )") . 
+        " GROUP BY d.id_servico");
+
+        if(!is_numeric($busca)){
+            $busca = "%$busca%";
+        }
+
+        $sql->bindParam(":busca", $busca);
+        $sql->execute();
+
+        $servicosAssoc = $sql->fetchAll(PDO::FETCH_ASSOC);
+        $servicosObj = ServicoDAO::assocsToServicos($servicosAssoc);
+
+        return $servicosObj ?? [];
+    }
+
     private static function assocToServico($data): Servico | null
     {
         if (!isset($data)) return null;
@@ -104,7 +146,7 @@ final class ServicoDAO
         );
         $s->id = $data["id"];
 
-        return $s;
+        return $s ?? [];
     }
 
     private static function assocsToServicos($data): array | null

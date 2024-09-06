@@ -137,9 +137,22 @@ switch ($opcao) {
 
         header("Location: controllerCarrinho.php?opcao=". $opcaoRedirecionamento);
         break;
-    default:
-        # code...
-        break;
+    case 7: //busca
+        session_start();
+        $busca = $_REQUEST["busca"];
+
+        $servicos = $servicoDAO->find($busca);
+
+        foreach($servicos as $servico) {
+            $servico->tipo = $tipoDAO->getById($servico->idTipo);
+            $servico->datasDisponiveis = $datasDAO->findByIdServicoParaVenda($servico->id);
+            $servico->nomePrestador = $usuarioDAO->getNameById($servico->idPrestador);
+        }   
+
+        $_SESSION["servicos"] = $servicos;
+
+        header("Location: controllerCarrinho.php?opcao=1");
+        session_start();
 }
 
 function getServicoById(int $id) : Servico {
