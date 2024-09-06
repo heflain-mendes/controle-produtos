@@ -21,6 +21,8 @@ final class item
                 return $data;
             }
         }
+
+        return null;
     }
 
     public function getDatas(): array

@@ -18,7 +18,9 @@ if(isset($_SESSION["carrinho"])){
 <p>
     <?php
     if(sizeof($carrinho) == 0){
+        include_once 'includes/mensagens.inc.php';
         include_once 'includes/carrinhoVazio.inc.php';
+        $_SESSION["soma"] = 0;
     }else{
 
     ?>
@@ -26,7 +28,7 @@ if(isset($_SESSION["carrinho"])){
     <table class="table table-ligth table-striped">
         <thead class="table-danger">
             <tr class="align-middle" style="text-align: center">
-                <th witdh="10%">Item No</th>
+                <th witdh="10%">Nº</th>
                 <th>Descricao</th>
                 <th>Prestador</th>
                 <th>Cidade</th>
@@ -51,7 +53,7 @@ if(isset($_SESSION["carrinho"])){
                 <td><?= $item->getServico()->cidade ?></td>
                 <td><?= formatarData($data->data) ?></td>
                 <td>R$ <?= number_format($item->getServico()->valor, 2, ",", ".") ?></td>
-                <td><a href="#" class='btn btn-danger btn-sm'>X</a></td>
+                <td><a href="../controllers/controllerCarrinho.php?opcao=4&id_servico=<?= $item->getServico()->id?>&id_data=<?= $data->id ?>" class='btn btn-danger btn-sm'>X</a></td>
             </tr>
 
             <?php }} ?>
@@ -65,18 +67,19 @@ if(isset($_SESSION["carrinho"])){
     <div class="container text-center">
         <div class="row">
             <div class="col">
-                <a class="btn btn-warning" role="button" href="#"><b>Continuar comprando</b></a>
+                <a class="btn btn-warning" role="button" href="../controllers/controllerServico.php?opcao=6&opcao_redirecionamento=1"><b>Continuar comprando</b></a>
             </div>
             <div class="col">
-                <a class="btn btn-danger" role="button" href="#"><b>Esvaziar carrinho</b></a>
+                <a class="btn btn-danger" role="button" href="../controllers/controllerCarrinho.php?opcao=5"><b>Esvaziar carrinho</b></a>
             </div>
             <div class="col">
-                <a class="btn btn-success" role="button" href="#"><b>Finalizar compra</b></a>
+                <a class="btn btn-success" role="button" href="dadosCompra.php"><b>Finalizar compra</b></a>
             </div>
         </div>
     </div>
 
     <?php
+        $_SESSION["soma"] = $soma;
     }
     require_once 'includes/rodape.inc.php';
     ?>

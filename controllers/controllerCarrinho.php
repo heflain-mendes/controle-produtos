@@ -48,7 +48,7 @@ switch ($opcao) {
             $carrinho = $_SESSION["carrinho"];
         }
 
-        $item = buscarServicoNoCarrinhoById($carrinho, $idServico);
+        $item = buscarItemNoCarrinhoById($carrinho, $idServico);
         $servicos = $_SESSION["servicos"];
 
         $servico = null;
@@ -75,22 +75,42 @@ switch ($opcao) {
 
         header("Location: controllerCarrinho.php?opcao=2");
         break;
+    case 4://remover data do carrinho
+        session_start();
+        $idServico = (int)$_REQUEST["id_servico"];
+        $idData = (int)$_REQUEST["id_data"];
+
+        $carrinho = $_SESSION["carrinho"];
+
+        $item = buscarItemNoCarrinhoById($carrinho, $idServico);
+
+        $item->removeData($idData);
+        $_SESSION["carrinho"] = $carrinho;
+        header("Location: controllerServico.php?opcao=6&opcao_redirecionamento=2");
+        break;
+    case 5://limpar carrinho
+        session_start();
+        unset($_SESSION["carrinho"]);
+        $_SESSION["carrinho"] = [];
+        header("Location: controllerServico.php?opcao=6&opcao_redirecionamento=2");
+        break;
 }
 
-function buscarServicoNoCarrinhoById($array, $id)
+function buscarItemNoCarrinhoById($carrinho, $id)
 {
-    foreach ($array as $item) {
+    foreach ($carrinho as $item) {
         if ($item->getServico()->id == $id) {
             return $item;
         }
     }
     return null;
 }
-function buscarServicoById($array, $id)
+
+function buscarServicoById($servicos, $id)
 {
-    foreach ($array as $item) {
-        if ($item->id == $id) {
-            return $item;
+    foreach ($servicos as $servico) {
+        if ($servico->id == $id) {
+            return $servico;
         }
     }
     return null;

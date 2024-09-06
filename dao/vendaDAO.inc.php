@@ -3,7 +3,7 @@ require_once "conexao.inc.php";
 require_once "genericDAO.inc.php";
 require_once "../classes/model/venda.php";
 
-final class TipoDAO
+final class VendaDAO
 {
     private PDO $conn;
     private GenericDAO $decorator;
@@ -15,23 +15,23 @@ final class TipoDAO
         $this->decorator = new GenericDAO($this->conn, "vendas");
     }
 
-    public function insert(Venda $venda) {
+    public function insert(Venda $venda): int {
         $this->decorator->insert([
-            "id_usuario" => $venda->idUsuario,
-            "id_produto" => $venda->idServico,
-            "valor_total" => $venda->valorTotal,
-            "qtd_itens" => $venda->qtdItens
+            "id_contratante" => $venda->idContratante,
+            "valor" => $venda->valor,
+            "forma_pagamento" => $venda->formaPagamento
         ]);
+
+        return $this->conn->lastInsertId();
     }
 
     private static function assocToVenda($data) : Venda | null{
         if(!isset($data)) return null;
 
         $v = new Venda(
-            $data["id_usuario"], 
-            $data["id_servico"], 
-            $data["valor_total"], 
-            $data["qtd_itens"]
+            $data["id_contratante"], 
+            $data["valor"], 
+            $data["forma_pagamento"]
         );        
         $v->id = $data["id"];
 

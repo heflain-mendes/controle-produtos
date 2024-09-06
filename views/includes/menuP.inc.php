@@ -19,7 +19,7 @@
       <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="../controllers/controllerServico.php?opcao=1">Visualizar</a></li>
         <li><a class="dropdown-item" href="../controllers/controllerTipo.php?opcao=1">Cadastrar</a></li>
-        <li><a class="dropdown-item" href="../controllers/controllerServico.php?opcao=6">Consultar</a></li>
+        <li><a class="dropdown-item" href="../controllers/controllerServico.php?opcao=6&opcao_redirecionamento=1">Consultar</a></li>
       </ul>
     </li>
 

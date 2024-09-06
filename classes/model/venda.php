@@ -4,10 +4,9 @@ final class Venda
     private int $id;
     
     public function __construct(
-        private int $idUsuario,
-        private int $idDatasDisponiveis,
-        private float $valorTotal,
-        private int $qtdItens
+        private int $idContratante,
+        private float $valor,
+        private string $formaPagamento
     ) {}
 
     public function __get ($name){ 

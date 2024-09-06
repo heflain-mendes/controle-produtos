@@ -34,7 +34,9 @@ CREATE TABLE `servicos` (
 CREATE TABLE `vendas` (
   `id` int(11) AUTO_INCREMENT PRIMARY KEY,
   `id_contratante` int(11) NOT NULL,
-  FOREIGN KEY (id_contratante) REFERENCES usuarios(id)
+  FOREIGN KEY (id_contratante) REFERENCES usuarios(id),
+  `valor` float NOT NULL,
+  `forma_pagamento` varchar(50) NOT NULL,
 );
 
 CREATE TABLE `datas_disponiveis` (
@@ -46,4 +48,3 @@ CREATE TABLE `datas_disponiveis` (
   `data` date NOT NULL,
   `disponivel` tinyint(1) NOT NULL DEFAULT 1
 );
-

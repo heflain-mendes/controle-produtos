@@ -123,6 +123,7 @@ switch ($opcao) {
     break;
     case 6: //get all
         session_start();
+        $opcaoRedirecionamento = $_REQUEST["opcao_redirecionamento"] ?? 1;
         $servicos = $servicoDAO->getAll();
         
         foreach($servicos as $servico) {
@@ -133,7 +134,8 @@ switch ($opcao) {
 
         $_SESSION["servicos"] = $servicos;
 
-        header("Location: controllerCarrinho.php?opcao=1");
+
+        header("Location: controllerCarrinho.php?opcao=". $opcaoRedirecionamento);
         break;
     default:
         # code...

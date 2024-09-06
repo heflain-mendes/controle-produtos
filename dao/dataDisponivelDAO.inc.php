@@ -26,11 +26,23 @@ final class DataDisponivelDAO
     }
 
     public function findByIdServico(int $idServico) : array | null {
-        $r = $this->decorator->find(["id_servico" => $idServico]);
+        $sql = $this->conn->prepare(
+            "
+                SELECT * 
+                FROM $this->nomeDatabase
+                WHERE id_servico = :id_servico AND disponivel = 1 AND data > CURRENT_DATE
+                ORDER BY data ASC
+            "
+        );
+
+        $sql->bindValue(":id_servico", $idServico);
+        $sql->execute();
+
+        $r = $sql->fetchAll(PDO::FETCH_ASSOC);
 
         $rObj = DataDisponivelDAO::assocsToDatasDisponiveis($r);
 
-        return $rObj ?? [];
+        return $rObj ?? []; 
     }
 
     public function findByIdServicoParaVenda(int $idServico) : array | null {
@@ -39,6 +51,7 @@ final class DataDisponivelDAO
                 SELECT * 
                 FROM $this->nomeDatabase
                 WHERE id_servico = :id_servico AND disponivel = 1 AND data > CURRENT_DATE
+                ORDER BY data ASC
             "
         );
 
@@ -58,6 +71,10 @@ final class DataDisponivelDAO
         foreach($datasDisponiveis as $d) {
             $this->insert(new DataDisponivel($idServico, strtotime($d), true));
         }
+    }
+
+    public function vendaEfetuada(int $idDataDisponivel, int $idVenda) {
+        $this->decorator->update(["id" => $idDataDisponivel], ["id_venda" => $idVenda, "disponivel" => 0]);
     }
 
     private static function assocToDataDisponivel($data) : DataDisponivel | null{
