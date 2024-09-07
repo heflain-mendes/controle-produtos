@@ -26,16 +26,7 @@ switch ($opcao) {
             $servico->tipo = $tipoDAO->getById($servico->idTipo);
             $datasDisponiveis = $datasDAO->findByIdServico($servico->id);
 
-            $possuiServicoAFazer = false;
-
-            foreach ($datasDisponiveis as $d) {
-                if(!$d->disponivel && $d->data > strtotime('today')) {
-                    $possuiServicoAFazer = true;
-                    continue;
-                }
-            }
-
-            $servico->possuiServicoAFazer = $possuiServicoAFazer;
+            $servico->possuiServicoAFazer = possuiServicoAFazer($datasDisponiveis);
         }   
 
         $_SESSION["servicos"] = $servicos;
@@ -133,8 +124,6 @@ switch ($opcao) {
         }   
 
         $_SESSION["servicos"] = $servicos;
-
-
         header("Location: controllerCarrinho.php?opcao=". $opcaoRedirecionamento);
         break;
     case 7: //busca
@@ -152,7 +141,38 @@ switch ($opcao) {
         $_SESSION["servicos"] = $servicos;
 
         header("Location: controllerCarrinho.php?opcao=1");
+    break;
+
+    case 10: //get all Admin
         session_start();
+
+        //validar usuário
+        if(!isset($_SESSION["usuario"]) || $_SESSION["usuario"]->tipo != 'A') {
+            header("Location: ../controllers/controllerUsuario.php?opcao=2");
+        }
+
+        $servicos = $servicoDAO->getAllToAdmin();
+        
+        foreach($servicos as $servico) {
+            $servico->tipo = $tipoDAO->getById($servico->idTipo);
+            $servico->datasDisponiveis = $datasDAO->findByIdServico($servico->id);
+            $servico->nomePrestador = $usuarioDAO->getNameById($servico->idPrestador);
+            $servico->possuiServicoAFazer = possuiServicoAFazer($servico->datasDisponiveis);
+        }
+
+        $_SESSION["servicos"] = $servicos;
+        header("Location: ../views/exibirServicosAdmin.php");
+        break;
+}
+
+function possuiServicoAFazer($datasDisponiveis) {
+    foreach ($datasDisponiveis as $d) {
+        if(!$d->disponivel && $d->data > strtotime('today')) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 function getServicoById(int $id) : Servico {

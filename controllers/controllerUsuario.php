@@ -3,6 +3,7 @@ require_once "../dao/usuarioDAO.inc.php";
 require_once "../classes/model/usuario.php";
 $opcao = (int)$_REQUEST["opcao"];
 
+$usuarioDao = new UsuarioDao();
 switch ($opcao) {
     case 1: //Login
         session_start();
@@ -11,22 +12,21 @@ switch ($opcao) {
         $_SESSION["sucessos"] = [];
 
         try {
-            $usuarioDao = new UsuarioDao();
             //recupero as informações do login
             $email = $_REQUEST["email"];
             $senha = $_REQUEST["senha"];
 
             //passa o email e senha para ser autenticado pelo usuarioDao
             $usuario = $usuarioDao->autenticar($email, $senha);
-            
+
 
             if ($usuario != null) {
                 $_SESSION["usuario"] = $usuario;
 
-                header("Location: controllerServico.php?opcao=6&opcao_redirecionamento=1");
+                header("Location: ../views/index.php");
             } else {
                 $_SESSION["erros"][] = "Usuário não encontrado";
-                header("Location: ../views/formUsuarioLogin.php? ");
+                header("Location: ../views/formUsuarioLogin.php");
             }
         } catch (Exception $e) {
             $_SESSION["erros"][] = "Ocorreu um erro ao fazer o login";
@@ -41,7 +41,6 @@ switch ($opcao) {
     case 3: //insert
         session_start();
         try {
-            $usuarioDao = new UsuarioDao();
             $tipo = 'C';
 
             if (isset($_REQUEST["tipo"])) {
@@ -73,8 +72,7 @@ switch ($opcao) {
     case 4: //get by id
         session_start();
         try {
-            $usuarioDao = new UsuarioDao();
-            
+
             $_SESSION["usuario"] = $usuarioDao->getById($_SESSION["usuario"]->id);
 
             header("Location: ../views/formUsuarioAtualizar.php");
@@ -85,7 +83,6 @@ switch ($opcao) {
     case 5: //update
         session_start();
         try {
-            $usuarioDao = new UsuarioDao();
             $tipo = 'C';
 
             if (isset($_REQUEST["tipo"])) {
@@ -118,9 +115,8 @@ switch ($opcao) {
     case 6: //update senha
         session_start();
         try {
-            $usuarioDao = new UsuarioDao();
             $senha = $_REQUEST["senha"];
-            
+
             $id = $_SESSION["usuario"]->id;
 
             $usuarioDao->updateSenha($id, $senha);
@@ -135,17 +131,70 @@ switch ($opcao) {
         break;
     case 7: //deleção
         session_start();
-        try{
-            $usuarioDao = new UsuarioDao();
+        try {
             $usuario = $_SESSION["usuario"];
 
-            $usuarioDao->delete($usuario);
+            $usuarioDao->delete($usuario->id);
 
             $_SESSION["sucessos"][] = "Usuário excluído com sucesso";
             header("Location: controllerUsuario.php?opcao=2");
-        }catch(Exception $e){
+        } catch (Exception $e) {
             $_SESSION["erros"][] = "Erro ao excluir usuário";
             header("Location: ../views/formUsuarioAtualizar.php");
         }
+        break;
+    case 10: //get all
+        session_start();
+
+        if (!isset($_SESSION["usuario"]) || $_SESSION["usuario"]->tipo != 'A') {
+            header("Location: ../views/index.php");
+        }
+
+        $usuarios = $usuarioDao->getAll();
+        $_SESSION["usuarios"] = $usuarios;
+
+        header("Location: ../views/exibirUsuarios.php");
+        session_start();
+        break;
+    case 11: //get by id to admin
+        session_start();
+
+        if (!isset($_SESSION["usuario"]) || $_SESSION["usuario"]->tipo != 'A') {
+            header("Location: ../views/index.php");
+        }
+
+        $_SESSION["usuarioAtualizar"] = $usuarioDao->getById($_REQUEST["id"]);
+        header("Location: ../views/formUsuarioAtualizar.php");
+        break;
+    case 12: //update users
+        session_start();
+        $tipo = 'C';
+
+        if (isset($_REQUEST["tipo"])) {
+            $tipo = 'P';
+        }
+
+        $usuario = new Usuario(
+            $_REQUEST["nome"],
+            $_REQUEST["endereco"],
+            $_REQUEST["telefone"],
+            $_REQUEST["cpf_cnpj"],
+            strtotime($_REQUEST["dt_nascimento"]),
+            $_REQUEST["email"],
+            "",
+            $tipo
+        );
+        $usuario->id = $_REQUEST["id"];
+
+        $usuarioDao->updateSemSenha($usuario);
+
+        $_SESSION["usuarioAtualizar"] = $usuarioDao->getById($_REQUEST["id"]);
+
+        $_SESSION["sucessos"][] = "Usuário atualizado com sucesso";
+        header("Location: ../views/formUsuarioAtualizar.php");
+        break;
+    case 13:
+        $usuarioDao->delete($_REQUEST["id"]);
+        header("Location: controllerUsuario.php?opcao=10");
         break;
 }

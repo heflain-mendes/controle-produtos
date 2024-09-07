@@ -90,6 +90,12 @@ final class ServicoDAO
         return $servicosObj;
     }
 
+    public function getAllToAdmin(): array{
+        $servicosAssoc = $this->decorator->find(["esta_deletado" => 0]);
+        $servicosObj = ServicoDAO::assocsToServicos($servicosAssoc);
+        return $servicosObj;
+    }
+
     public function find($busca): array
     {
         $sql = $this->conn->prepare("

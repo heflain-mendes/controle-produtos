@@ -1,6 +1,10 @@
 <?php 
 require_once "../classes/model/usuario.php";
+session_start();
 
-header("Location: ../controllers/controllerServico.php?opcao=6&opcao_redirecionamento=1");
-
+if(!isset($_SESSION["usuario"]) || $_SESSION["usuario"]->tipo != "A"){
+    header("Location: ../controllers/controllerServico.php?opcao=6&opcao_redirecionamento=1");
+}else{
+    header("Location: ../controllers/controllerUsuario.php?opcao=10");
+}
  ?>

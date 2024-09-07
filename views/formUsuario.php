@@ -37,7 +37,7 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="floatingInputTel" oninput="validarTelefone(this)"
                         placeholder="XX XXXXX-XXXX" name="telefone" required>
-                        <label for="floatingInputTel">Telefone</label>
+                        <label for="floatingInputTel">Telefone (XX XXXXX-XXXX)</label>
                     </div>
 
                     <hr>
@@ -45,7 +45,7 @@
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="floatingInputCPF" oninput="validarCPF_CNPJ(this)"
                         placeholder="XXX.XXX.XXX-XX" name="cpf_cnpj" required>
-                        <label for="floatingInputCPF">CPF ou CNPJ</label>
+                        <label for="floatingInputCPF">CPF ou CNPJ (XXX.XXX.XXX-XX)</label>
                     </div>
 
                     <hr>

@@ -30,7 +30,7 @@ final class DataDisponivelDAO
             "
                 SELECT * 
                 FROM $this->nomeDatabase
-                WHERE id_servico = :id_servico AND disponivel = 1 AND data > CURRENT_DATE
+                WHERE id_servico = :id_servico AND data > CURRENT_DATE
                 ORDER BY data ASC
             "
         );

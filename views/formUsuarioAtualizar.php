@@ -3,6 +3,12 @@ require_once "includes/cabecalho.inc.php";
 require_once "../utils/funcoesUteis.php";
 
 $usuario = $_SESSION["usuario"];
+$opcaoUpdate = 5;
+
+if($usuario->tipo == "A"){
+    $opcao = 12;
+    $usuario = $_SESSION["usuarioAtualizar"];
+}
 ?>
 
 <!-- CONTEUDO -->
@@ -47,7 +53,7 @@ $usuario = $_SESSION["usuario"];
                         <input type="text" class="form-control" id="floatingInputTel" oninput="validarTelefone(this)"
                         placeholder="XX XXXXX-XXXX" name="telefone"
                             value="<?= $usuario->telefone ?>">
-                        <label for="floatingInputTel">Telefone</label>
+                        <label for="floatingInputTel">Telefone (XX XXXXX-XXXX)</label>
                     </div>
 
                     <hr>
@@ -55,7 +61,7 @@ $usuario = $_SESSION["usuario"];
                     <div class="form-floating mb-3">
                         <input type="text" class="form-control" id="floatingInputCPF" oninput="validarCPF_CNPJ(this)"
                         value="<?= $usuario->cpf_cnpj?>" placeholder="XXX.XXX.XXX-XX" name="cpf_cnpj" required>
-                        <label for="floatingInputCPF">CPF ou CNPJ</label>
+                        <label for="floatingInputCPF">CPF ou CNPJ (XXX.XXX.XXX-XX)</label>
                     </div>
 
                     <hr>
@@ -90,7 +96,7 @@ $usuario = $_SESSION["usuario"];
                     }
                     ?>
 
-                    <input type="hidden" value="5" name="opcao">
+                    <input type="hidden" value="<?= $opcao ?>" name="opcao">
                     <input type="hidden" value="<?= $usuario->id ?>" name="id">
 
                     <?php
