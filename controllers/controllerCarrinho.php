@@ -61,14 +61,19 @@ switch ($opcao) {
 
         if ($item == null) {
             $item = new Item($servico);
-            foreach ($idDatas as $idData) {
-                $item->addData($servico->getData($idData));
-            }
             $carrinho[] = $item;
-        } else {
-            foreach ($idDatas as $idData) {
-                $item->addData($servico->getData($idData));
+        }
+
+        foreach ($idDatas as $idData) {
+            $qtdItensNoCarrinho = 0;
+            foreach ($carrinho as $item) {
+                $qtdItensNoCarrinho += sizeof($item->getDatas());
             }
+            if($qtdItensNoCarrinho == 5){
+                $_SESSION["erros"][] = "Limite de 5 serviços no carrinho atingido";
+                break;
+            }
+            $item->addData($servico->getData($idData));
         }
 
         $_SESSION["carrinho"] = $carrinho;

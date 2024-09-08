@@ -103,18 +103,19 @@ class UsuarioDAO
 
     public function getAll(): array
     {
-        $usuarios = $this->decorator->find(["esta_deletado" => 0]);
+        $sql = $this->conn->query("SELECT * FROM usuarios WHERE esta_deletado = 0 AND tipo != 'A'");
+        $usuariosAssoc = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-        $retorno = [];
+        $usuarios = [];
 
-        foreach ($usuarios as $usuario) {
+        foreach ($usuariosAssoc as $usuario) {
             $u = UsuarioDAO::assocToUsuario($usuario);
             $u->possuiServicosFuturosAPrestar = $this->possuiServicosFuturosAPrestar($u->id);
             $u->possuiServicosFuturosContratados = $this->possuiServicosFuturosContratados($u->id);
-            $retorno[] = $u;
+            $usuarios[] = $u;
         }
 
-        return $retorno;
+        return $usuarios;
     }
 
     private static function assocToUsuario(array $data): Usuario | null

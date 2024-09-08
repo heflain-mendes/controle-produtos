@@ -35,7 +35,7 @@ switch ($opcao) {
         break;
     case 2: //Logout
         session_start();
-        unset($_SESSION["usuario"]);
+        unset($_SESSION);
         header("Location: ../views/index.php");
         break;
     case 3: //insert

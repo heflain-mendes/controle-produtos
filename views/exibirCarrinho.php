@@ -15,10 +15,10 @@ if(isset($_SESSION["carrinho"])){
 ?>
 
 <h1 class="text-center">Carrinho de compra</h1>
+<?php include_once "includes/mensagens.inc.php" ?>
 <p>
     <?php
     if(sizeof($carrinho) == 0){
-        include_once 'includes/mensagens.inc.php';
         include_once 'includes/carrinhoVazio.inc.php';
         $_SESSION["soma"] = 0;
     }else{

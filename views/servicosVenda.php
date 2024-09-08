@@ -10,7 +10,6 @@ $servicos = $_SESSION["servicos"];
 $tamanhoMaxDescricao = 50;
 ?>
 <h1 class="text-center">Serviços Disponíveis</h1>
-<p>
 
 <div class="col-md-6 mb-3">
   <form action="../controllers/controllerServico.php" method="get" class="row g-3 align-items-center">
