@@ -39,6 +39,15 @@ switch ($opcao) {
         $_SESSION["sucessos"][] = "Compra realizada com sucesso!";
         header("Location: ../views/exibirCarrinho.php");
         break;
+    case 2:
+        session_start();
+
+        if(isset($_SESSION["usuario"])){
+            header("Location: ../views/dadosCompra.php");
+        }else{
+            header("Location: ../views/formUsuarioLogin.php?em_compra=1");
+        }
+        break;
 }
 
 ?>

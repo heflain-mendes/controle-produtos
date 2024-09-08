@@ -73,7 +73,7 @@ if(isset($_SESSION["carrinho"])){
                 <a class="btn btn-danger" role="button" href="../controllers/controllerCarrinho.php?opcao=5"><b>Esvaziar carrinho</b></a>
             </div>
             <div class="col">
-                <a class="btn btn-success" role="button" href="dadosCompra.php"><b>Finalizar compra</b></a>
+                <a class="btn btn-success" role="button" href="../controllers/controllerVenda.php?opcao=2"><b>Finalizar compra</b></a>
             </div>
         </div>
     </div>

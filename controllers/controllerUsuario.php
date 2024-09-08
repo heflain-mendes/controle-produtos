@@ -23,7 +23,12 @@ switch ($opcao) {
             if ($usuario != null) {
                 $_SESSION["usuario"] = $usuario;
 
-                header("Location: ../views/index.php");
+                if($_REQUEST["em_compra"] == 1){
+                    header("Location: controllerVenda.php?opcao=2");
+                }else{
+                    header("Location: ../views/index.php");
+                }
+                
             } else {
                 $_SESSION["erros"][] = "Usuário não encontrado";
                 header("Location: ../views/formUsuarioLogin.php");
@@ -35,7 +40,7 @@ switch ($opcao) {
         break;
     case 2: //Logout
         session_start();
-        unset($_SESSION);
+        session_unset();
         header("Location: ../views/index.php");
         break;
     case 3: //insert
