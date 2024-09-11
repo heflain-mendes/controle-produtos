@@ -45,6 +45,57 @@ final class DataDisponivelDAO
         return $rObj ?? []; 
     }
 
+    public function findAllContratadasByIdServico(int $idServico, int $idContratante) : array | null {
+        $sql = $this->conn->prepare(
+            "
+                SELECT 
+                    d.id as id, 
+                    d.id_servico as id_servico, 
+                    d.data as data, 
+                    d.disponivel as disponivel,  
+                    d.id_venda as id_venda, 
+                    d.prestado as prestado
+                FROM $this->nomeDatabase as d
+                INNER JOIN vendas as v
+                ON d.id_venda = v.id
+                WHERE id_servico = :id_servico AND 
+                disponivel = 0 AND
+                v.id_contratante = :id_contratante
+                ORDER BY data ASC
+            "
+        );
+
+        $sql->bindValue(":id_contratante", $idContratante);
+        $sql->bindValue(":id_servico", $idServico);
+        $sql->execute();
+
+        $r = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        $rObj = DataDisponivelDAO::assocsToDatasDisponiveis($r);
+
+        return $rObj ?? []; 
+    }
+
+    public function findAllVendasByIdServico(int $idServico) : array | null {
+        $sql = $this->conn->prepare(
+            "
+                SELECT * 
+                FROM $this->nomeDatabase
+                WHERE id_servico = :id_servico AND disponivel = 0
+                ORDER BY data ASC
+            "
+        );
+
+        $sql->bindValue(":id_servico", $idServico);
+        $sql->execute();
+
+        $r = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        $rObj = DataDisponivelDAO::assocsToDatasDisponiveis($r);
+
+        return $rObj ?? []; 
+    }
+
     public function findByIdServicoParaVenda(int $idServico) : array | null {
         $sql = $this->conn->prepare(
             "
@@ -77,6 +128,10 @@ final class DataDisponivelDAO
         $this->decorator->update(["id" => $idDataDisponivel], ["id_venda" => $idVenda, "disponivel" => 0]);
     }
 
+    public function marcarComoPrestado(int $idDataDisponivel) {
+        $this->decorator->update(["id" => $idDataDisponivel], ["prestado" => 1]);
+    }
+
     private static function assocToDataDisponivel($data) : DataDisponivel | null{
         if(!isset($data)) return null;
 
@@ -84,7 +139,8 @@ final class DataDisponivelDAO
             $data["id_servico"], 
             strtotime($data["data"]), 
             $data["disponivel"], 
-            $data["id_venda"] ?? 0
+            $data["id_venda"] ?? 0,
+            $data["prestado"] ?? 0
         );
         
         $d->id = $data["id"];

@@ -7,7 +7,7 @@ require_once "../dao/tipoDAO.inc.php";
 
 $opcao = 0;
 
-if(isset($_REQUEST["opcao"]) && is_numeric($_REQUEST["opcao"])){
+if (isset($_REQUEST["opcao"]) && is_numeric($_REQUEST["opcao"])) {
     $opcao = (int)$_REQUEST["opcao"];
 }
 
@@ -21,13 +21,13 @@ switch ($opcao) {
         session_start();
         $idUsuario = $_SESSION["usuario"]->id;
         $servicos = $servicoDAO->getByIdUsuario($idUsuario);
-        
-        foreach($servicos as $servico) {
+
+        foreach ($servicos as $servico) {
             $servico->tipo = $tipoDAO->getById($servico->idTipo);
             $datasDisponiveis = $datasDAO->findByIdServico($servico->id);
 
             $servico->possuiServicoAFazer = possuiServicoAFazer($datasDisponiveis);
-        }   
+        }
 
         $_SESSION["servicos"] = $servicos;
 
@@ -35,7 +35,7 @@ switch ($opcao) {
         break;
     case 2: //insert
         session_start();
-        try{
+        try {
             $servico = new Servico(
                 $_REQUEST["nome"],
                 $_REQUEST["valor"],
@@ -44,24 +44,24 @@ switch ($opcao) {
                 $_REQUEST["tipo"],
                 $_SESSION["usuario"]->id
             );
-    
+
             $idServico = $servicoDAO->insert(
-               $servico
+                $servico
             );
-    
+
             $datas = [];
-    
-            if(isset($_REQUEST["datas"])) {
+
+            if (isset($_REQUEST["datas"])) {
                 $datas = $_REQUEST["datas"];
             }
-    
-            foreach($datas as $data) {
+
+            foreach ($datas as $data) {
                 $data = new DataDisponivel($idServico, strtotime($data), true);
                 $datasDAO->insert($data);
             }
-    
+
             header("Location: controllerServico.php?opcao=1");
-        }catch(Exception $e){
+        } catch (Exception $e) {
             $_SESSION["erros"][] = "Erro ao inserir serviço";
             header("Location: controllerTipo.php?opcao=2");
         }
@@ -76,7 +76,7 @@ switch ($opcao) {
     case 4: //atualizar
         session_start();
 
-        try{
+        try {
             $servico = new Servico(
                 $_REQUEST["nome"],
                 $_REQUEST["valor"],
@@ -86,22 +86,22 @@ switch ($opcao) {
                 $_REQUEST["idPrestador"]
             );
             $servico->id = $_REQUEST["id"];
-    
+
             $servicoDAO->update($servico);
-    
+
             $datas = [];
-    
-            if(isset($_REQUEST["datas"])) {
+
+            if (isset($_REQUEST["datas"])) {
                 $datas = $_REQUEST["datas"];
             }
-    
+
             $datasDAO->update($datas, $servico->id);
-    
+
             $servico = getServicoById($servico->id);
             $_SESSION["servico"] = $servico;
             $_SESSION["sucessos"][] = "Serviço atualizado com sucesso";
             header("Location: controllerTipo.php?opcao=2");
-        }catch(Exception $e){
+        } catch (Exception $e) {
             $_SESSION["erros"][] = "Erro ao atualizar serviço";
             header("Location: controllerTipo.php?opcao=2");
         }
@@ -111,20 +111,20 @@ switch ($opcao) {
         $servicoDAO->delete($_REQUEST["id"]);
 
         header("Location: controllerServico.php?opcao=1");
-    break;
+        break;
     case 6: //get all
         session_start();
         $opcaoRedirecionamento = $_REQUEST["opcao_redirecionamento"] ?? 1;
         $servicos = $servicoDAO->getAll();
-        
-        foreach($servicos as $servico) {
+
+        foreach ($servicos as $servico) {
             $servico->tipo = $tipoDAO->getById($servico->idTipo);
             $servico->datasDisponiveis = $datasDAO->findByIdServicoParaVenda($servico->id);
             $servico->nomePrestador = $usuarioDAO->getNameById($servico->idPrestador);
-        }   
+        }
 
         $_SESSION["servicos"] = $servicos;
-        header("Location: controllerCarrinho.php?opcao=". $opcaoRedirecionamento);
+        header("Location: controllerCarrinho.php?opcao=" . $opcaoRedirecionamento);
         break;
     case 7: //busca
         session_start();
@@ -132,28 +132,59 @@ switch ($opcao) {
 
         $servicos = $servicoDAO->find($busca);
 
-        foreach($servicos as $servico) {
+        foreach ($servicos as $servico) {
             $servico->tipo = $tipoDAO->getById($servico->idTipo);
             $servico->datasDisponiveis = $datasDAO->findByIdServicoParaVenda($servico->id);
             $servico->nomePrestador = $usuarioDAO->getNameById($servico->idPrestador);
-        }   
+        }
 
         $_SESSION["servicos"] = $servicos;
 
         header("Location: controllerCarrinho.php?opcao=1");
-    break;
+        break;
+    case 8: //get all by id usuário para visualizar serviços contratados
+        session_start();
+        $id = $_SESSION["usuario"]->id;
+        $servicos = $servicoDAO->getAllContratadosByIdUsuario($id);
+
+        foreach ($servicos as $servico) {
+            $servico->tipo = $tipoDAO->getById($servico->idTipo);
+            $servico->datasDisponiveis = $datasDAO->findAllContratadasByIdServico($servico->id, $id);
+            $servico->nomePrestador = $usuarioDAO->getNameById($servico->idPrestador);
+        }
+
+        $_SESSION["servicos"] = $servicos;
+
+        header("Location: ../views/exibirServicosContratados.php");
+        break;
+
+    case 9: //get all by id usuário para visualizar serviços vendidos
+        session_start();
+        $id = $_SESSION["usuario"]->id;
+        $servicos = $servicoDAO->getAllVendidosByIdUsuario($id);
+
+        foreach ($servicos as $servico) {
+            $servico->tipo = $tipoDAO->getById($servico->idTipo);
+            $servico->datasDisponiveis = $datasDAO->findAllVendasByIdServico($servico->id);
+            $servico->nomePrestador = $usuarioDAO->getNameById($servico->idPrestador);
+        }
+
+        $_SESSION["servicos"] = $servicos;
+
+        header("Location: ../views/exibirServicosVendidos.php");
+        break;
 
     case 10: //get all Admin
         session_start();
 
         //validar usuário
-        if(!isset($_SESSION["usuario"]) || $_SESSION["usuario"]->tipo != 'A') {
+        if (!isset($_SESSION["usuario"]) || $_SESSION["usuario"]->tipo != 'A') {
             header("Location: ../controllers/controllerUsuario.php?opcao=2");
         }
 
         $servicos = $servicoDAO->getAllToAdmin();
-        
-        foreach($servicos as $servico) {
+
+        foreach ($servicos as $servico) {
             $servico->tipo = $tipoDAO->getById($servico->idTipo);
             $servico->datasDisponiveis = $datasDAO->findByIdServico($servico->id);
             $servico->nomePrestador = $usuarioDAO->getNameById($servico->idPrestador);
@@ -163,11 +194,33 @@ switch ($opcao) {
         $_SESSION["servicos"] = $servicos;
         header("Location: ../views/exibirServicosAdmin.php");
         break;
+
+    case 11: //marca como prestado
+        session_start();
+        $datasDAO->marcarComoPrestado($_REQUEST["id"]);
+        header("Location: controllerServico.php?opcao=8");
+        break;
+
+    case 12: //get all by id usuário para admin visualizar serviços vendidos
+        session_start();
+        $servicos = $servicoDAO->getAllVendidos($id);
+
+        foreach ($servicos as $servico) {
+            $servico->tipo = $tipoDAO->getById($servico->idTipo);
+            $servico->datasDisponiveis = $datasDAO->findAllVendasByIdServico($servico->id);
+            $servico->nomePrestador = $usuarioDAO->getNameById($servico->idPrestador);
+        }
+
+        $_SESSION["servicos"] = $servicos;
+
+        header("Location: ../views/exibirServicosVendidos.php");
+        break;
 }
 
-function possuiServicoAFazer($datasDisponiveis) {
+function possuiServicoAFazer($datasDisponiveis)
+{
     foreach ($datasDisponiveis as $d) {
-        if(!$d->disponivel && $d->data > strtotime('today')) {
+        if (!$d->disponivel && $d->data > strtotime('today')) {
             return true;
         }
     }
@@ -175,7 +228,8 @@ function possuiServicoAFazer($datasDisponiveis) {
     return false;
 }
 
-function getServicoById(int $id) : Servico {
+function getServicoById(int $id): Servico
+{
     global $servicoDAO, $tipoDAO, $datasDAO;
 
     $servico = $servicoDAO->getById($id);
@@ -184,4 +238,3 @@ function getServicoById(int $id) : Servico {
 
     return $servico;
 }
-?>

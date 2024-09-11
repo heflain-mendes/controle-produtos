@@ -10,7 +10,17 @@
   </a>
 
   <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-    <li><a href="../controllers/controllerServico.php?opcao=10" class="nav-link px-2 link-secondary">Serviços</a></li>
+  <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle link-dark" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Serviços
+      </a>
+      <ul class="dropdown-menu">
+        <li><a class="dropdown-item" href="../controllers/controllerServico.php?opcao=10">Visualizar</a></li>
+        <li><a class="dropdown-item" href="../controllers/controllerServico.php?opcao=12">Consultar</a></li>
+      </ul>
+    </li>
+
+    
 
     <li><a class="nav-link px-2 link-secondar" href="../controllers/controllerUsuario.php?opcao=10">Usuários</a></li>
   </ul>

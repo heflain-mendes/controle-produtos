@@ -4,9 +4,12 @@ require_once "../utils/funcoesUteis.php";
 
 $usuario = $_SESSION["usuario"];
 $opcaoUpdate = 5;
+$opcaoUpdate = 5;
+$opcaoRemocao = 7;
 
 if($usuario->tipo == "A"){
-    $opcao = 12;
+    $opcaoUpdate = 12;
+    $opcaoRemocao = 13;
     $usuario = $_SESSION["usuarioAtualizar"];
 }
 ?>
@@ -90,13 +93,13 @@ if($usuario->tipo == "A"){
 
                     <?php
                     if (!$usuario->possuiServicosFuturosAPrestar || !$usuario->possuiServicosFuturosContratados) {
-                        echo "<div class=\"d-grid mb-2\">
-                        <a href=\"../controllers/controllerUsuario.php?opcao=7\" class=\"btn btn-lg btn-danger btn-login fw-bold text-uppercase\" >Remover conta</a>
+                        echo "<div class='d-grid mb-2'>
+                        <a href='../controllers/controllerUsuario.php?opcao=". $opcaoRemocao ."' class='btn btn-lg btn-danger btn-login fw-bold text-uppercase' >Remover conta</a>
                         </div>";
                     }
                     ?>
 
-                    <input type="hidden" value="<?= $opcao ?>" name="opcao">
+                    <input type="hidden" value="<?= $opcaoUpdate ?>" name="opcao">
                     <input type="hidden" value="<?= $usuario->id ?>" name="id">
 
                     <?php

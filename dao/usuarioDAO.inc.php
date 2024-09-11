@@ -28,8 +28,8 @@ class UsuarioDAO
 
         if (isset($usuario)) {
             $retorno = UsuarioDAO::assocToUsuario($usuario);
-            $retorno->possuiServicosFuturosAPrestar = $this->possuiServicosFuturosAPrestar($usuario->id);
-            $retorno->possuiServicosFuturosContratados = $this->possuiServicosFuturosContratados($usuario->id);
+            $retorno->possuiServicosFuturosAPrestar = $this->possuiServicosFuturosAPrestar($retorno->id);
+            $retorno->possuiServicosFuturosContratados = $this->possuiServicosFuturosContratados($retorno->id);
         }
 
         return $retorno;
@@ -74,7 +74,7 @@ class UsuarioDAO
     {
         $usuario = UsuarioDAO::assocToUsuario($this->decorator->find(["id" => $id, "esta_deletado" => 0])[0]);
         $usuario->possuiServicosFuturosAPrestar = $this->possuiServicosFuturosAPrestar($usuario->id);
-        $usuario->possuiServicosFuturosContratados = false;
+        $usuario->possuiServicosFuturosContratados = $this->possuiServicosFuturosContratados($usuario->id);
         $this->possuiServicosFuturosContratados($usuario->id);
 
         return $usuario;

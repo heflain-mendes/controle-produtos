@@ -8,6 +8,7 @@ include_once 'includes/cabecalho.inc.php';
 $servicos = $_SESSION["servicos"];
 
 $tamanhoMaxDescricao = 50;
+$tamanhoMaxNome = 50;
 ?>
 <h1 class="text-center">Serviços Disponíveis</h1>
 
@@ -24,6 +25,11 @@ $tamanhoMaxDescricao = 50;
   </form>
 </div>
 
+<?php
+if(sizeof($servicos) == 0) {
+  require_once "includes/carrinhoBuscaVazia.php";
+}else{
+?>
 <div class="row row-cols-1 row-cols-md-5 g-4">
 
   <?php
@@ -31,8 +37,11 @@ $tamanhoMaxDescricao = 50;
     if (sizeof($servico->datasDisponiveis) == 0) {
       continue;
     }
-    $c = $tamanhoMaxDescricao - strlen($servico->descricao);
+    $c = $tamanhoMaxDescricao - strlen($servico->descricao) - 1;
     $c = $c > 0 ? $c : 0;
+
+    $n = $tamanhoMaxNome - strlen($servico->nome) - 1;
+    $n = $n > 0 ? $n : 0;
   ?>
 
     <div class="col">
@@ -41,8 +50,8 @@ $tamanhoMaxDescricao = 50;
           <input type="hidden" name="opcao" value="3">
           <input type="hidden" name="id_servico" value="<?= $servico->id ?>">
           <div class="card-body">
-            <h5 class="card-title"><?= $servico->nome ?></h5>
-            <p class="card-text" style="white-space: pre-wrap;"><?= $servico->descricao . " " . str_repeat('&nbsp;', $c) ?></p>
+            <h5 class="card-title" style="height: 75px; overflow: hidden; text-overflow: ellipsis;"><?= $servico->nome?></h5>
+            <p class="card-text" style="height: 40px; overflow: hidden; text-overflow: ellipsis;"><?= $servico->descricao?></p>
             <h6 class="card-text">Tipo: <?= $servico->tipo->nome ?></h6>
             <h6 class="card-text">Prestador: <?= $servico->nomePrestador ?></h6>
             <h6 class="card-text text-end"><?= $servico->cidade ?></h6>
@@ -82,4 +91,6 @@ $tamanhoMaxDescricao = 50;
   ?>
 </div>
 
-<?php require_once "includes/rodape.inc.php" ?>
+<?php
+}
+ require_once "includes/rodape.inc.php"; ?>

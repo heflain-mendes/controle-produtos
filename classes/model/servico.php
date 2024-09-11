@@ -9,6 +9,7 @@ final class Servico
     private array $datasDisponiveis;
     private bool $possuiServicoAFazer;
     private string $nomePrestador;
+    private string $formaPagamento;
 
     
     public function __construct(
