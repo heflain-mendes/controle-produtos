@@ -1,7 +1,7 @@
 <?php
 require_once "conexao.inc.php";
 require_once "genericDAO.inc.php";
-require_once "../classes/model/servico.php";
+require_once "../classes/servico.inc.php";
 
 final class ServicoDAO
 {
@@ -28,7 +28,7 @@ final class ServicoDAO
         ]);
     }
 
-    public function getById($id): Servico
+    public function getById($id): Servico | null
     {
         $servico = $this->decorator->find(["id" => $id, "esta_deletado" => false])[0];
         return ServicoDAO::assocToServico($servico);
@@ -37,94 +37,7 @@ final class ServicoDAO
     public function getByIdUsuario($idUsuario): array
     {
         $servicosAssoc = $this->decorator->find(["id_prestador" => $idUsuario, "esta_deletado" => false]);
-        $servicosObj = ServicoDAO::assocsToServicos($servicosAssoc);
-
-        return $servicosObj;
-    }
-
-    //retornar todos os serviços contratados por um usuário
-    public function getAllContratadosByIdUsuario($id){
-        $sql = $this->conn->prepare("
-        SELECT 
-            s.id as id,
-            s.id_prestador as id_prestador,
-            s.nome as nome,
-            s.valor as valor,
-            s.cidade as cidade,
-            s.descricao as descricao,
-            s.id_tipo as id_tipo,
-            IFNULL(v.forma_pagamento, '') as forma_pagamento
-        FROM servicos s
-        INNER JOIN datas_disponiveis d
-        ON s.id = d.id_servico
-        INNER JOIN vendas v
-        ON d.id_venda = v.id
-        WHERE
-            d.disponivel = 0 AND
-            v.id_contratante = :id
-        GROUP BY s.id");
-
-        $sql->bindParam(":id", $id);
-        $sql->execute();
-
-        $servicosAssoc = $sql->fetchAll(PDO::FETCH_ASSOC);
-        $servicosObj = ServicoDAO::assocsToServicos($servicosAssoc);
-
-        return $servicosObj;
-    }
-
-    //retornar todos os serviços vendidos por um usuário
-    public function getAllVendidosByIdUsuario($id){
-        $sql = $this->conn->prepare("
-        SELECT 
-            s.id as id,
-            s.id_prestador as id_prestador,
-            s.nome as nome,
-            s.valor as valor,
-            s.cidade as cidade,
-            s.descricao as descricao,
-            s.id_tipo as id_tipo,
-            IFNULL(v.forma_pagamento, '') as forma_pagamento
-        FROM servicos s
-        INNER JOIN datas_disponiveis d
-        ON s.id = d.id_servico
-        INNER JOIN vendas v
-        ON v.id = d.id_venda
-        WHERE 
-            s.id_prestador = :id_usuario
-        GROUP BY s.id");
-
-        $sql->bindParam(":id_usuario", $id);
-        $sql->execute();
-
-        $servicosAssoc = $sql->fetchAll(PDO::FETCH_ASSOC);
-        $servicosObj = ServicoDAO::assocsToServicos($servicosAssoc);
-
-        return $servicosObj;
-    }
-
-    public function getAllVendidos(){
-        $sql = $this->conn->query("
-        SELECT 
-            s.id as id,
-            s.id_prestador as id_prestador,
-            s.nome as nome,
-            s.valor as valor,
-            s.cidade as cidade,
-            s.descricao as descricao,
-            s.id_tipo as id_tipo,
-            IFNULL(v.forma_pagamento, '') as forma_pagamento
-        FROM servicos s
-        INNER JOIN datas_disponiveis d
-        ON s.id = d.id_servico
-        INNER JOIN vendas v
-        ON v.id = d.id_venda
-        GROUP BY s.id");
-
-        $servicosAssoc = $sql->fetchAll(PDO::FETCH_ASSOC);
-        $servicosObj = ServicoDAO::assocsToServicos($servicosAssoc);
-
-        return $servicosObj;
+        return ServicoDAO::assocsToServicos($servicosAssoc);
     }
 
     public function update(Servico $servico)
@@ -149,9 +62,9 @@ final class ServicoDAO
         ],);
     }
 
-    public function getAll(): array
+    public function getAll($idUsuario): array
     {
-        $sql = $this->conn->query("
+        $sql = $this->conn->prepare("
         SELECT 
             s.id as id,
             s.id_prestador as id_prestador,
@@ -163,22 +76,89 @@ final class ServicoDAO
         FROM servicos s
         INNER JOIN datas_disponiveis d 
         ON s.id = d.id_servico
+        INNER JOIN usuarios u
+        ON s.id_prestador = u.id
         WHERE 
             s.esta_deletado = 0 AND
             d.disponivel = 1 AND
-            d.data > CURRENT_DATE
+            d.data > CURRENT_DATE AND
+            s.id_prestador != :idUsuario AND
+            u.tipo = 'P' AND
+            u.esta_deletado = 0
         GROUP BY d.id_servico");
 
-        $servicosAssoc = $sql->fetchAll(PDO::FETCH_ASSOC);
-        $servicosObj = ServicoDAO::assocsToServicos($servicosAssoc);
+        $sql->bindParam(":idUsuario", $idUsuario);
 
-        return $servicosObj;
+        $sql->execute();
+
+        $servicosAssoc = $sql->fetchAll(PDO::FETCH_ASSOC);
+        return ServicoDAO::assocsToServicos($servicosAssoc);
     }
 
     public function getAllToAdmin(): array{
         $servicosAssoc = $this->decorator->find(["esta_deletado" => 0]);
-        $servicosObj = ServicoDAO::assocsToServicos($servicosAssoc);
-        return $servicosObj;
+        return ServicoDAO::assocsToServicos($servicosAssoc);
+    }
+
+    public function getAllVendidosByIdVendaIdPerstador($idVenda, $idUsuario): array{
+        $sql = $this->conn->prepare("
+        SELECT 
+            s.id as id,
+            s.id_prestador as id_prestador,
+            s.nome as nome,
+            s.valor as valor,
+            s.cidade as cidade,
+            s.descricao as descricao,
+            s.id_tipo as id_tipo
+        FROM servicos s
+        INNER JOIN datas_disponiveis d
+        ON s.id = d.id_servico
+        INNER JOIN vendas as v
+        ON v.id = d.id_venda
+        WHERE
+            v.id = :idVenda AND
+            s.id_prestador = :idUsuario
+        GROUP BY s.id DESC    
+        ");
+
+        $sql->bindParam(":idVenda", $idVenda);
+        $sql->bindParam(":idUsuario", $idUsuario);
+        $sql->execute();
+
+        $servicosAssoc = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        return ServicoDAO::assocsToServicos($servicosAssoc);
+    }
+
+    public function getAllContratadosByIdVenda($idVenda): array{
+        $sql = $this->conn->prepare("
+        SELECT 
+            s.id as id,
+            s.id_prestador as id_prestador,
+            s.nome as nome,
+            s.valor as valor,
+            s.cidade as cidade,
+            s.descricao as descricao,
+            s.id_tipo as id_tipo,
+            u.nome as nome_prestador
+        FROM servicos s
+        INNER JOIN datas_disponiveis d
+        ON s.id = d.id_servico
+        INNER JOIN vendas as v
+        ON v.id = d.id_venda
+        INNER JOIN usuarios as u
+        ON s.id_prestador = u.id
+        WHERE
+            v.id = :idVenda
+        GROUP BY s.id DESC    
+        ");
+
+        $sql->bindParam(":idVenda", $idVenda);
+        $sql->execute();
+
+        $servicosAssoc = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+        return ServicoDAO::assocsToServicos($servicosAssoc);
     }
 
     public function find($busca): array
@@ -218,9 +198,7 @@ final class ServicoDAO
         $sql->execute();
 
         $servicosAssoc = $sql->fetchAll(PDO::FETCH_ASSOC);
-        $servicosObj = ServicoDAO::assocsToServicos($servicosAssoc);
-
-        return $servicosObj ?? [];
+        return ServicoDAO::assocsToServicos($servicosAssoc);
     }
 
     private static function assocToServico($data): Servico | null
@@ -237,16 +215,16 @@ final class ServicoDAO
         );
         $s->id = $data["id"];
 
-        if(isset($data["forma_pagamento"])){
-            $s->formaPagamento = $data["forma_pagamento"];
+        if(isset($data["nome_prestador"])){
+            $s->nomePrestador = $data["nome_prestador"];
         }
 
-        return $s ?? [];
+        return $s;
     }
 
-    private static function assocsToServicos($data): array | null
+    private static function assocsToServicos($data): array
     {
-        if (!isset($data)) return null;
+        if (!isset($data)) return [];
 
         $r = [];
 

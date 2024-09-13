@@ -19,7 +19,8 @@
       <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="../controllers/controllerServico.php?opcao=1&opcao_redirecionamento=1">Visualizar</a></li>
         <li><a class="dropdown-item" href="../controllers/controllerTipo.php?opcao=1">Cadastrar</a></li>
-        <li><a class="dropdown-item" href="../controllers/controllerServico.php?opcao=9">Consultar</a></li>
+        <li><a class="dropdown-item" href="../controllers/controllerVenda.php?opcao=3">Consultar Vendidos</a></li>
+        <li><a class="dropdown-item" href="../controllers/controllerVenda.php?opcao=4">Consultar Contratados</a></li>
       </ul>
     </li>
 

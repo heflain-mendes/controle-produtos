@@ -1,12 +1,14 @@
 <?php
-require_once "../classes/model/item.php";
-require_once "../classes/model/servico.php";
+require_once "../classes/item.inc.php";
+require_once "../classes/servico.inc.php";
 
 
 $opcao = (int)$_REQUEST["opcao"];
 
 switch ($opcao) {
     //remover as dadas do serviços que estão no carrinho
+    //Dessa forma mesmo que o usuário clique no botão de voltar do navegador
+    //as datas que ele selecionou não estarão mais disponíveis
     case 1: 
     case 2:
         session_start();
@@ -16,6 +18,10 @@ switch ($opcao) {
 
         foreach ($carrinho as $item) {
             $s = buscarServicoById($servicos, $item->getServico()->id);
+
+            if ($s == null) {
+                continue;
+            }
 
             foreach ($item->getDatas() as $data) {
                 $s->datasDisponiveis = array_filter($s->datasDisponiveis, function ($d) use ($data) {

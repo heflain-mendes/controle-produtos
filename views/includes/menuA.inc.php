@@ -16,13 +16,13 @@
       </a>
       <ul class="dropdown-menu">
         <li><a class="dropdown-item" href="../controllers/controllerServico.php?opcao=10">Visualizar</a></li>
-        <li><a class="dropdown-item" href="../controllers/controllerServico.php?opcao=12">Consultar</a></li>
+        <li><a class="dropdown-item" href="../controllers/controllerVenda.php?opcao=10">Consultar</a></li>
       </ul>
     </li>
 
     
 
-    <li><a class="nav-link px-2 link-secondar" href="../controllers/controllerUsuario.php?opcao=10">Usuários</a></li>
+    <li><a class="nav-link px-2 link-dark" href="../controllers/controllerUsuario.php?opcao=10">Usuários</a></li>
   </ul>
 
   <div class="col-md-3 text-end">

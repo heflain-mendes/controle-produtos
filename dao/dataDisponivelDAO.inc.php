@@ -1,7 +1,7 @@
 <?php
 require_once "conexao.inc.php";
 require_once "genericDAO.inc.php";
-require_once "../classes/model/dataDisponivel.php";
+require_once "../classes/dataDisponivel.inc.php";
 require_once "../utils/funcoesUteis.php";
 
 final class DataDisponivelDAO
@@ -25,7 +25,7 @@ final class DataDisponivelDAO
         ]);
     }
 
-    public function findByIdServico(int $idServico) : array | null {
+    public function findByIdServico(int $idServico) : array {
         $sql = $this->conn->prepare(
             "
                 SELECT * 
@@ -40,12 +40,10 @@ final class DataDisponivelDAO
 
         $r = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-        $rObj = DataDisponivelDAO::assocsToDatasDisponiveis($r);
-
-        return $rObj ?? []; 
+        return DataDisponivelDAO::assocsToDatasDisponiveis($r);
     }
 
-    public function findAllContratadasByIdServico(int $idServico, int $idContratante) : array | null {
+    public function findAllContratadasByIdServico(int $idServico, int $idContratante) : array {
         $sql = $this->conn->prepare(
             "
                 SELECT 
@@ -71,32 +69,39 @@ final class DataDisponivelDAO
 
         $r = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-        $rObj = DataDisponivelDAO::assocsToDatasDisponiveis($r);
-
-        return $rObj ?? []; 
+        return DataDisponivelDAO::assocsToDatasDisponiveis($r);
     }
 
-    public function findAllVendasByIdServico(int $idServico) : array | null {
+    public function findAllByIdServicoIdVenda(int $idServico, int $idVenda) : array {
         $sql = $this->conn->prepare(
             "
-                SELECT * 
-                FROM $this->nomeDatabase
-                WHERE id_servico = :id_servico AND disponivel = 0
+                SELECT 
+                    d.id as id, 
+                    d.id_servico as id_servico, 
+                    d.data as data, 
+                    d.disponivel as disponivel,  
+                    d.id_venda as id_venda, 
+                    d.prestado as prestado
+                FROM $this->nomeDatabase as d
+                INNER JOIN vendas as v
+                ON id_venda = v.id
+                WHERE id_servico = :id_servico AND 
+                disponivel = 0 AND
+                v.id = :idVenda
                 ORDER BY data ASC
             "
         );
 
         $sql->bindValue(":id_servico", $idServico);
+        $sql->bindValue(":idVenda", $idVenda);
         $sql->execute();
 
         $r = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-        $rObj = DataDisponivelDAO::assocsToDatasDisponiveis($r);
-
-        return $rObj ?? []; 
+        return DataDisponivelDAO::assocsToDatasDisponiveis($r);
     }
 
-    public function findByIdServicoParaVenda(int $idServico) : array | null {
+    public function findByIdServicoParaVenda(int $idServico) : array {
         $sql = $this->conn->prepare(
             "
                 SELECT * 
@@ -111,9 +116,7 @@ final class DataDisponivelDAO
 
         $r = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-        $rObj = DataDisponivelDAO::assocsToDatasDisponiveis($r);
-
-        return $rObj ?? []; 
+        return DataDisponivelDAO::assocsToDatasDisponiveis($r);
     }
 
     public function update(array $datasDisponiveis, int $idServico) {
@@ -132,7 +135,7 @@ final class DataDisponivelDAO
         $this->decorator->update(["id" => $idDataDisponivel], ["prestado" => 1]);
     }
 
-    private static function assocToDataDisponivel($data) : DataDisponivel | null{
+    private static function assocToDataDisponivel($data) : DataDisponivel{
         if(!isset($data)) return null;
 
         $d = new DataDisponivel(
@@ -148,8 +151,8 @@ final class DataDisponivelDAO
         return $d;
     }
 
-    private static function assocsToDatasDisponiveis($data) : array | null{
-        if(!isset($data)) return null;
+    private static function assocsToDatasDisponiveis($data) : array{
+        if(!isset($data)) return [];
 
         $r = [];
         foreach($data as $item){

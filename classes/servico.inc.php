@@ -1,6 +1,6 @@
 <?php
-require_once "dataDisponivel.php";
-require_once "tipo.php";
+require_once "dataDisponivel.inc.php";
+require_once "tipo.inc.php";
 
 final class Servico 
 {
@@ -9,7 +9,6 @@ final class Servico
     private array $datasDisponiveis;
     private bool $possuiServicoAFazer;
     private string $nomePrestador;
-    private string $formaPagamento;
 
     
     public function __construct(

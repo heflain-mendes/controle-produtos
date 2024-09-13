@@ -1,5 +1,5 @@
 <?php
-require_once "../classes/model/tipo.php";
+require_once "../classes/tipo.inc.php";
 require_once "../utils/funcoesUteis.php";
 require_once "includes/cabecalho.inc.php";
 

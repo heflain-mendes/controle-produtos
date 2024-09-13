@@ -1,5 +1,5 @@
 <?php
-require_once "../classes/model/usuario.php";
+require_once "../classes/usuario.inc.php";
 require_once "../dao/usuarioDAO.inc.php";
 require_once "../dao/servicoDAO.inc.php";
 require_once "../dao/dataDisponivelDAO.inc.php";
@@ -114,8 +114,14 @@ switch ($opcao) {
         break;
     case 6: //get all
         session_start();
+        $idUsuario = 0;
+
+        if (isset($_SESSION["usuario"])) {
+            $idUsuario = $_SESSION["usuario"]->id;
+        }
+
         $opcaoRedirecionamento = $_REQUEST["opcao_redirecionamento"] ?? 1;
-        $servicos = $servicoDAO->getAll();
+        $servicos = $servicoDAO->getAll($idUsuario);
 
         foreach ($servicos as $servico) {
             $servico->tipo = $tipoDAO->getById($servico->idTipo);
@@ -139,39 +145,15 @@ switch ($opcao) {
         }
 
         $_SESSION["servicos"] = $servicos;
+        $_SESSION["busca"] = $busca;
 
         header("Location: controllerCarrinho.php?opcao=1");
         break;
-    case 8: //get all by id usuário para visualizar serviços contratados
+
+    case 8: //marca como prestado
         session_start();
-        $id = $_SESSION["usuario"]->id;
-        $servicos = $servicoDAO->getAllContratadosByIdUsuario($id);
-
-        foreach ($servicos as $servico) {
-            $servico->tipo = $tipoDAO->getById($servico->idTipo);
-            $servico->datasDisponiveis = $datasDAO->findAllContratadasByIdServico($servico->id, $id);
-            $servico->nomePrestador = $usuarioDAO->getNameById($servico->idPrestador);
-        }
-
-        $_SESSION["servicos"] = $servicos;
-
-        header("Location: ../views/exibirServicosContratados.php");
-        break;
-
-    case 9: //get all by id usuário para visualizar serviços vendidos
-        session_start();
-        $id = $_SESSION["usuario"]->id;
-        $servicos = $servicoDAO->getAllVendidosByIdUsuario($id);
-
-        foreach ($servicos as $servico) {
-            $servico->tipo = $tipoDAO->getById($servico->idTipo);
-            $servico->datasDisponiveis = $datasDAO->findAllVendasByIdServico($servico->id);
-            $servico->nomePrestador = $usuarioDAO->getNameById($servico->idPrestador);
-        }
-
-        $_SESSION["servicos"] = $servicos;
-
-        header("Location: ../views/exibirServicosVendidos.php");
+        $datasDAO->marcarComoPrestado($_REQUEST["id"]);
+        header("Location: controllerVenda.php?opcao=4");
         break;
 
     case 10: //get all Admin
@@ -193,27 +175,6 @@ switch ($opcao) {
 
         $_SESSION["servicos"] = $servicos;
         header("Location: ../views/exibirServicosAdmin.php");
-        break;
-
-    case 11: //marca como prestado
-        session_start();
-        $datasDAO->marcarComoPrestado($_REQUEST["id"]);
-        header("Location: controllerServico.php?opcao=8");
-        break;
-
-    case 12: //get all by id usuário para admin visualizar serviços vendidos
-        session_start();
-        $servicos = $servicoDAO->getAllVendidos($id);
-
-        foreach ($servicos as $servico) {
-            $servico->tipo = $tipoDAO->getById($servico->idTipo);
-            $servico->datasDisponiveis = $datasDAO->findAllVendasByIdServico($servico->id);
-            $servico->nomePrestador = $usuarioDAO->getNameById($servico->idPrestador);
-        }
-
-        $_SESSION["servicos"] = $servicos;
-
-        header("Location: ../views/exibirServicosVendidos.php");
         break;
 }
 

@@ -1,7 +1,7 @@
 <?php
 require_once "conexao.inc.php";
 require_once "genericDAO.inc.php";
-require_once "../classes/model/tipo.php";
+require_once "../classes/tipo.inc.php";
 
 final class TipoDAO
 {
@@ -43,8 +43,8 @@ final class TipoDAO
         return $t;
     }
 
-    private static function assocsToTipos($data) : array | null {
-        if(!isset($data)) return null;
+    private static function assocsToTipos($data) : array {
+        if(!isset($data)) return [];
         
         $r = [];
 

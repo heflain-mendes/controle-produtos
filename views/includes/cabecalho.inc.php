@@ -9,7 +9,7 @@
   <body>
         <div class="container">
 <?php
-    require_once "../classes/model/usuario.php";
+    require_once "../classes/usuario.inc.php";
     session_start();
     
     $menu = "V";

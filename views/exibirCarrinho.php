@@ -1,7 +1,7 @@
 <?php
-require_once '../classes/model/item.php';
-require_once '../classes/model/servico.php';
-require_once '../classes/model/dataDisponivel.php';
+require_once '../classes/item.inc.php';
+require_once '../classes/servico.inc.php';
+require_once '../classes/dataDisponivel.inc.php';
 require_once '../utils/funcoesUteis.php';
 require_once 'includes/cabecalho.inc.php';
 

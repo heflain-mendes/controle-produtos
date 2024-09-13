@@ -1,22 +1,29 @@
 <?php
-require_once '../classes/model/item.php';
-require_once '../classes/model/servico.php';
-require_once '../classes/model/dataDisponivel.php';
+require_once '../classes/item.inc.php';
+require_once '../classes/servico.inc.php';
+require_once '../classes/venda.inc.php';
+require_once '../classes/dataDisponivel.inc.php';
 require_once '../utils/funcoesUteis.php';
 require_once 'includes/cabecalho.inc.php';
 
+$vendas = [];
 
-$servicos = [];
-
-if(isset($_SESSION["servicos"])){
-    $servicos = $_SESSION["servicos"];
+if(isset($_SESSION["vendas_feitas"])){
+    $vendas = $_SESSION["vendas_feitas"];
 }
-
 ?>
 
 <h1 class="text-center">Servicos contratados</h1>
 <?php include_once "includes/mensagens.inc.php" ?>
 <p>
+<?php
+    if(sizeof($vendas) == 0){
+        $title = "Nenhum serviço encontrado";
+        $message = "Não foram encontrados serviços contratados.";
+        require_once "includes/carrinhoBuscaVazia.php";
+    }else{
+
+    ?>
 <div class="table-responsive">
     <table class="table table-ligth table-striped">
         <thead class="table-danger">
@@ -34,8 +41,10 @@ if(isset($_SESSION["servicos"])){
         <tbody class="table-group-divider">
             <?php
             $contador = 0;
-            foreach ($servicos as $servico) {
-                foreach ($servico->datasDisponiveis as $data) {
+            foreach ($vendas as $venda) {
+                foreach ($venda->itens as $itens) {
+                    $servico = $itens->getServico();
+                    foreach($itens->getDatas() as $data){
                 $contador++;
             ?>
             <tr class="align-middle" style="text-align: center">
@@ -45,19 +54,20 @@ if(isset($_SESSION["servicos"])){
                 <td><?= $servico->cidade ?></td>
                 <td><?= formatarData($data->data) ?></td>
                 <td>R$ <?= number_format($servico->valor, 2, ",", ".") ?></td>
-                <td><?= $servico->formaPagamento ?></td>
+                <td><?= $venda->formaPagamento ?></td>
                 <?php
                 if($data->prestado){
                     echo "<td>serviço prestado</td>";
                 }else{
-                    echo "<td><a href='../controllers/controllerServico.php?opcao=11&id=". $data->id . "' class='btn btn-success btn-sm'>Prestado?</a></td>";
+                    echo "<td><a href='../controllers/controllerServico.php?opcao=8&id=". $data->id . "' class='btn btn-success btn-sm'>Prestado?</a></td>";
                 }
                 ?>
             </tr>
 
-            <?php }} ?>
+            <?php }}} ?>
     </table>
 
     <?php
+    }
     require_once 'includes/rodape.inc.php';
     ?>

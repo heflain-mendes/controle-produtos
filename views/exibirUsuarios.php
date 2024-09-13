@@ -1,5 +1,5 @@
 <?php
-require_once '../classes/model/servico.php';
+require_once '../classes/servico.inc.php';
 require_once 'includes/cabecalho.inc.php';
 
 $usuarios = $_SESSION['usuarios'];

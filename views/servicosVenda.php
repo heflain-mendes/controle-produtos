@@ -1,11 +1,18 @@
 <?php
 include_once '../utils/funcoesUteis.php';
-include_once '../classes/model/servico.php';
-include_once '../classes/model/tipo.php';
-include_once '../classes/model/dataDisponivel.php';
+include_once '../classes/servico.inc.php';
+include_once '../classes/tipo.inc.php';
+include_once '../classes/dataDisponivel.inc.php';
 include_once 'includes/cabecalho.inc.php';
 
 $servicos = $_SESSION["servicos"];
+
+$busca = "";
+
+if(isset($_SESSION["busca"])) {
+  $busca = $_SESSION["busca"];
+  unset($_SESSION["busca"]);
+}
 
 $tamanhoMaxDescricao = 50;
 $tamanhoMaxNome = 50;
@@ -19,18 +26,33 @@ $tamanhoMaxNome = 50;
       <label for="busca" class="col-form-label">Busca:</label>
     </div>
     <div class="d-flex col-10 col-md-10">
-      <input type="text" id="busca" name="busca" class="form-control me-2" placeholder="Digite aqui">
+      <input type="text" id="busca" name="busca" value="<?= $busca ?>" class="form-control me-2" placeholder="Digite aqui">
       <button type="submit" class="btn btn-info">Buscar</button>
     </div>
   </form>
 </div>
 
 <?php
-if(sizeof($servicos) == 0) {
+$possuiServicoComDatasDisponivel = false;
+
+foreach ($servicos as $servico) {
+  if (sizeof($servico->datasDisponiveis) > 0) {
+    $possuiServicoComDatasDisponivel = true;
+    break;
+  }
+}
+
+if(!$possuiServicoComDatasDisponivel) {
+  $title = "Nenhum serviço cadastrado";
+  $message = "Volte mais tarde, pois não há serviços cadastrados com datas disponíveis.<br>Por favor, tente novamente mais tarde.";
+ if($busca != ""){
+  $title = "Nenhum serviço encontrado";
+  $message = "Não foi encontrado nenhum serviço com os critérios de busca informados.";
+ }
   require_once "includes/carrinhoBuscaVazia.php";
 }else{
 ?>
-<div class="row row-cols-1 row-cols-md-5 g-4">
+<div class="row row-cols-1 row-cols-md-3 g-4">
 
   <?php
   foreach ($servicos as $servico) {
@@ -50,8 +72,8 @@ if(sizeof($servicos) == 0) {
           <input type="hidden" name="opcao" value="3">
           <input type="hidden" name="id_servico" value="<?= $servico->id ?>">
           <div class="card-body">
-            <h5 class="card-title" style="height: 75px; overflow: hidden; text-overflow: ellipsis;"><?= $servico->nome?></h5>
-            <p class="card-text" style="height: 40px; overflow: hidden; text-overflow: ellipsis;"><?= $servico->descricao?></p>
+            <h5 class="card-title" style="height: 60px; overflow: hidden; text-overflow: ellipsis;"><?= $servico->nome?></h5>
+            <p class="card-text" style="height: 50px; overflow: hidden; text-overflow: ellipsis;"><?= $servico->descricao?></p>
             <h6 class="card-text">Tipo: <?= $servico->tipo->nome ?></h6>
             <h6 class="card-text">Prestador: <?= $servico->nomePrestador ?></h6>
             <h6 class="card-text text-end"><?= $servico->cidade ?></h6>

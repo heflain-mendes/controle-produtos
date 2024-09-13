@@ -1,6 +1,6 @@
 <?php
 require_once "../dao/usuarioDAO.inc.php";
-require_once "../classes/model/usuario.php";
+require_once "../classes/usuario.inc.php";
 $opcao = (int)$_REQUEST["opcao"];
 
 $usuarioDao = new UsuarioDao();

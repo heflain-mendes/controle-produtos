@@ -1,7 +1,7 @@
 <?php
 require_once "conexao.inc.php";
 require_once "genericDAO.inc.php";
-require_once "../classes/model/usuario.php";
+require_once "../classes/usuario.inc.php";
 require_once "../utils/funcoesUteis.php";
 
 class UsuarioDAO

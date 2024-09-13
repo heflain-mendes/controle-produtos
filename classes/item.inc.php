@@ -1,10 +1,10 @@
 <?php
-require_once "servico.php";
-require_once "dataDisponivel.php";
+require_once "servico.inc.php";
+require_once "dataDisponivel.inc.php";
 
 final class item
 {
-    private array $datas;
+    private array $datas = [];
     public function __construct(
         private Servico $servico
     ) {}
@@ -33,6 +33,10 @@ final class item
     public function addData(DataDisponivel $data)
     {
        $this->datas[] = $data;
+    }
+
+    public function addDatas(array $datas) {
+        $this->datas = array_merge($this->datas, $datas);
     }
 
     public function removeData(int $id)
