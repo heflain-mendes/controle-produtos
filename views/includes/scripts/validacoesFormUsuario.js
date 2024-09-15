@@ -46,9 +46,12 @@ function validarTelefone(input) {
 
 function validarCPF_CNPJ(input) {
     const cpfPattern = /(^\d{3}\.\d{3}\.\d{3}\-\d{2}$)|(^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$)/;
-    if (!cpfPattern.test(input.value)) {
-        input.setCustomValidity("Formato de CPF inválido, formato correto: 000.000.000-00 ou CNPJ 00.000.000/0000-00");
-    } else {
+    const cnpjPattern =  /^\d{2}\.\d{3}\.\d{3}\/\d{4}\-\d{2}$/;
+
+    if(cpfPattern.test(input.value) || cnpjPattern.test(input.value)){
         input.setCustomValidity("");
+        return;
     }
+
+    input.setCustomValidity("Formato inválido, formato correto: 000.000.000-00 ou CNPJ 00.000.000/0000-00");
 }
