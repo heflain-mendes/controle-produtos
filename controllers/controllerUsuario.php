@@ -19,7 +19,6 @@ switch ($opcao) {
             //passa o email e senha para ser autenticado pelo usuarioDao
             $usuario = $usuarioDao->autenticar($email, $senha);
 
-
             if ($usuario != null) {
                 $_SESSION["usuario"] = $usuario;
 
@@ -30,8 +29,10 @@ switch ($opcao) {
                 }
                 
             } else {
+                $complemento = $_REQUEST["em_compra"] == 1 ? "?em_compra=1" : "";
+
                 $_SESSION["erros"][] = "Usuário não encontrado";
-                header("Location: ../views/formUsuarioLogin.php");
+                header("Location: ../views/formUsuarioLogin.php" . $complemento);
             }
         } catch (Exception $e) {
             $_SESSION["erros"][] = "Ocorreu um erro ao fazer o login";

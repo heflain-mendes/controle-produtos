@@ -41,7 +41,7 @@ switch ($opcao) {
         $_SESSION["sucessos"][] = "Compra realizada com sucesso!";
         header("Location: ../views/exibirCarrinho.php");
         break;
-    case 2:
+    case 2: //verificar se está logado
         session_start();
 
         if (isset($_SESSION["usuario"])) {

@@ -92,7 +92,7 @@ if($usuario->tipo == "A"){
                     </div>
 
                     <?php
-                    if (!$usuario->possuiServicosFuturosAPrestar || !$usuario->possuiServicosFuturosContratados) {
+                    if (!$usuario->possuiServicosFuturosAPrestar && !$usuario->possuiServicosFuturosContratados) {
                         echo "<div class='d-grid mb-2'>
                         <a href='../controllers/controllerUsuario.php?opcao=". $opcaoRemocao ."' class='btn btn-lg btn-danger btn-login fw-bold text-uppercase' >Remover conta</a>
                         </div>";
